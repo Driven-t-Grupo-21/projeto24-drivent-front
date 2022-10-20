@@ -9,7 +9,9 @@ export default TicketCards;
 
 const Container = styled.div`
   border: ${(props) => (props.active ? '1px solid #FFEED2' : '1px solid rgba(0, 0, 0, 0.3)')};
-  width: 145px;
+  box-sizing: border-box;
+  padding: 0 50px 0 50px;
+  min-width: 145px;
   height: 145px;
   border-radius: 20px;
   display: flex;
