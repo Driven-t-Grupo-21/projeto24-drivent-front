@@ -1,5 +1,15 @@
-import TicketTypes from '../../../components/Payment/TicketTypesPayment';
+import React from 'react';
+import TicketChoise from '../../../components/TicketChoise';
 
 export default function Payment() {
-  return <TicketTypes />;
+  const [progress, setProgress] = React.useState(1);
+
+  switch (progress) {
+  case 1:
+    return <TicketChoise />;
+  case 2:
+    return <>payment</>;
+  default:
+    return <>default</>;
+  }
 }
