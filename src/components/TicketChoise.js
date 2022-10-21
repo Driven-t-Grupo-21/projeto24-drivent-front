@@ -1,5 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
+
+import getEventTickets from '../hooks/api/useTicket';
+
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 import DashboardTitle from './DashboardTitle';
 import TicketCards from './TicketCards';
@@ -8,6 +13,18 @@ import EventInfoContext from '../contexts/EventInfoContext';
 const TicketChoise = () => {
   const { eventInfo } = useContext(EventInfoContext);
   const [cardActive, setCardActive] = useState('');
+  const { ticket, ticketLoading } = getEventTickets();
+  const isEnrolled = true;
+
+  /* para a msg de erro, se ticket === null e ticketLoading === false, imprimir msg, favor deletar esse comentario depois xD */
+
+  if (ticketLoading) {
+    return (
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   console.log(eventInfo);
 
@@ -29,7 +46,7 @@ const TicketChoise = () => {
     );
   }
 
-  return (
+  return isEnrolled ? (
     <Container>
       <DashboardTitle>Ingresso e pagamento</DashboardTitle>
       <h6>Primeiro, escolha sua modalidade de ingresso</h6>
@@ -52,6 +69,16 @@ const TicketChoise = () => {
         ''
       )}
     </Container>
+  ) : (
+    <>
+      <DashboardTitle>Ingresso e pagamento</DashboardTitle>
+      <Warning>
+        <h1>
+          Você precisa completar sua inscrição antes <br />
+          de prosseguir pra escolha de ingresso
+        </h1>
+      </Warning>
+    </>
   );
 };
 
@@ -71,4 +98,14 @@ const Container = styled.div`
     opacity: 0.5;
     font-size: 20px;
   }
+`;
+
+const Warning = styled.div`
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #8e8e8e;
+  text-align: center;
+  font-size: 20px;
 `;
