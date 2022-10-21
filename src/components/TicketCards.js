@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 function TicketCards(props) {
   return (
-    <Container active={props.isActive} width={props.width}>
+    <Container
+      width={props.width}
+      active={props.children[0].props.children === props.cardActive.type ? true : false}
+      onClick={() => {
+        if (!(props.children[0].props.children === props.cardActive.type)) {
+          props.setCardActive({ type: props.children[0].props.children, value: props.children[1].props.children[1] });
+        }
+      }}
+    >
       {props.children}
     </Container>
   );
@@ -13,6 +21,7 @@ export default TicketCards;
 
 const Container = styled.div`
   border: ${(props) => (props.active ? '1px solid #FFEED2' : '1px solid rgba(0, 0, 0, 0.3)')};
+  width: 145px;
   box-sizing: border-box;
   padding: 0 30px 0 30px;
   width: ${(props) => (props.width ? `${props.width}` : 'fit-content')};
