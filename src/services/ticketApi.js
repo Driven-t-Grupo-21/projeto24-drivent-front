@@ -1,7 +1,7 @@
 import api from './api';
 
-export async function getEventTicketsInfo(token) {
-  const response = await api.get('/ticket', {
+export async function getEventTicketsInfo(token, id) {
+  const response = await api.get(`/ticket/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -28,8 +28,8 @@ const TicketChoise = () => {
       <DashboardTitle>Ingresso e pagamento</DashboardTitle>
       <h6>Primeiro, escolha sua modalidade de ingresso</h6>
       <section className="cardsSection">
-        {eventInfo.Ticket.map((ticket, index) => (
-          <TicketCards isActive={false} key={index}>
+        {ticket.map((ticket, index) => (
+          <TicketCards isActive={false} key={index} width={'145px'}>
             <p>{ticket.type}</p>
             <p className="price">R$ {ticket.price}</p>
           </TicketCards>
