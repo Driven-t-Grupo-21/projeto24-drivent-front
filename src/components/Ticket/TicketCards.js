@@ -8,6 +8,7 @@ function TicketCards(props) {
       active={props.children[0].props.children === props.cardActive.type ? true : false}
       onClick={() => {
         if (!(props.children[0].props.children === props.cardActive.type)) {
+          if (props.children[0].props.children === 'Online') props.setHostingActive('');
           props.setCardActive({ type: props.children[0].props.children, value: props.children[1].props.children[1] });
         }
       }}
