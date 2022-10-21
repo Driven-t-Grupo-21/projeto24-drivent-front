@@ -1,5 +1,5 @@
 import React from 'react';
-import TicketChoise from '../../../components/TicketChoise';
+import TicketChoise from '../../../components/Ticket/TicketChoise';
 
 export default function Payment() {
   const [progress, setProgress] = React.useState(1);
