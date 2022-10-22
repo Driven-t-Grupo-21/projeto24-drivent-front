@@ -12,6 +12,7 @@ import HostCards, { PutHotelCards } from '../Ticket/HostCard';
 import EventInfoContext from '../../contexts/EventInfoContext';
 import createEventOrder from '../../hooks/api/useOrder';
 import { toast } from 'react-toastify';
+import { useToken } from '../../hooks/useContext';
 
 const TicketChoise = () => {
   const { eventInfo } = useContext(EventInfoContext);
@@ -20,6 +21,8 @@ const TicketChoise = () => {
   const { ticket, ticketLoading } = getEventTickets();
   const { orderLoading, createOrder } = createEventOrder();
   const isEnrolled = true;
+
+  const token = useToken();
 
   /* para a msg de erro, se ticket === null e ticketLoading === false, imprimir msg, favor deletar esse comentario depois xD */
 
@@ -40,7 +43,7 @@ const TicketChoise = () => {
     };
 
     try {
-      const createOrder2 = await createOrder(body);
+      const createOrder2 = await createOrder(body, token);
       toast('Ingresso reservado com sucesso');
     } catch (err) {
       toast('Não foi possível reservar o ingresso');
