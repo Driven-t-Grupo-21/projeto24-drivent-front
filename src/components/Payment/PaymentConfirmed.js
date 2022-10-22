@@ -3,26 +3,15 @@ import { BsFillCheckCircleFill as CheckIcon } from 'react-icons/bs';
 
 export default function PaymentConfirmed() {
   return (
-    <Container>
-      <h1>Pagamento</h1>
-      <ConfirmedBox>
-        <CheckIcon />
-        <Text>
-          <h2>Pagamento confirmado!</h2>
-          <h3>Prossiga para escolha de hospedagem e atividades</h3>
-        </Text>
-      </ConfirmedBox>
-    </Container>
+    <ConfirmedBox>
+      <CheckIcon />
+      <Text>
+        <h2>Pagamento confirmado!</h2>
+        <h3>Prossiga para escolha de hospedagem e atividades</h3>
+      </Text>
+    </ConfirmedBox>
   );
 }
-
-const Container = styled.div`
-  h1 {
-    font-size: 20px;
-    color: #8e8e8e;
-    margin-bottom: 20px;
-  }
-`;
 
 const ConfirmedBox = styled.div`
   display: flex;

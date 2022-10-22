@@ -10,13 +10,16 @@ import DashboardTitle from '../DashboardTitle';
 import TicketCards from '../Ticket/TicketCards';
 import HostCards, { PutHotelCards } from '../Ticket/HostCard';
 import EventInfoContext from '../../contexts/EventInfoContext';
+import TicketSummaryContext from '../../contexts/TicketSummaryContext';
 
-const TicketChoise = () => {
+const TicketChoise = (props) => {
   const { eventInfo } = useContext(EventInfoContext);
   const [cardActive, setCardActive] = useState('');
   const [hostingActive, setHostingActive] = useState('');
   const { ticket, ticketLoading } = getEventTickets();
   const isEnrolled = true;
+
+  const { setSummary } = useContext(TicketSummaryContext);
 
   /* para a msg de erro, se ticket === null e ticketLoading === false, imprimir msg, favor deletar esse comentario depois xD */
 
@@ -30,11 +33,12 @@ const TicketChoise = () => {
 
   function CreateInfo() {
     const totalValue = Number(cardActive.value) + Number(hostingActive.value ?? 0);
-    console.log({
-      event: eventInfo.type,
+    setSummary({
+      event: cardActive.type,
       hosting: hostingActive.type === 'Sem hotel' || hostingActive === '' ? false : true,
       value: String(totalValue.toFixed(2)),
     });
+    props.setProgress(2);
   }
 
   console.log(eventInfo);

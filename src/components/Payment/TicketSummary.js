@@ -1,32 +1,24 @@
 import styled from 'styled-components';
+import { useContext } from 'react';
+
+import TicketSummaryContext from '../../contexts/TicketSummaryContext';
 
 export default function TicketSummary() {
-  const summary = {
-    type: 'Presencial',
-    accommodation: 'Com Hotel',
-    totalPrice: 500,
-  };
-
+  const { summary } = useContext(TicketSummaryContext);
+  let accommodation = summary.hosting ? 'Com Hotel' : 'Sem hotel';
   return (
-    <Container>
-      <h1>Ingresso escolhido</h1>
-      <SummaryBox>
+    <SummaryBox>
+      {summary.event === 'Online' ? (
+        <h2>{summary.event}</h2>
+      ) : (
         <h2>
-          {summary.type} + {summary.accommodation}
+          {summary.event} + {accommodation}
         </h2>
-        <h3>R$ {summary.totalPrice}</h3>
-      </SummaryBox>
-    </Container>
+      )}
+      <h3>R$ {summary.value}</h3>
+    </SummaryBox>
   );
 }
-
-const Container = styled.div`
-  h1 {
-    font-size: 20px;
-    color: #8e8e8e;
-    margin-bottom: 18px;
-  }
-`;
 
 const SummaryBox = styled.div`
   width: 290px;
