@@ -10,16 +10,26 @@ import DashboardTitle from '../DashboardTitle';
 import TicketCards from '../Ticket/TicketCards';
 import HostCards, { PutHotelCards } from '../Ticket/HostCard';
 import EventInfoContext from '../../contexts/EventInfoContext';
+
 import TicketSummaryContext from '../../contexts/TicketSummaryContext';
+
+import createEventOrder from '../../hooks/api/useOrder';
+import { toast } from 'react-toastify';
+import { useToken } from '../../hooks/useContext';
+
 
 const TicketChoise = (props) => {
   const { eventInfo } = useContext(EventInfoContext);
   const [cardActive, setCardActive] = useState('');
   const [hostingActive, setHostingActive] = useState('');
   const { ticket, ticketLoading } = getEventTickets();
+  const { orderLoading, createOrder } = createEventOrder();
   const isEnrolled = true;
 
   const { setSummary } = useContext(TicketSummaryContext);
+
+  const token = useToken();
+
 
   /* para a msg de erro, se ticket === null e ticketLoading === false, imprimir msg, favor deletar esse comentario depois xD */
 
@@ -31,14 +41,29 @@ const TicketChoise = (props) => {
     );
   }
 
-  function CreateInfo() {
+  async function CreateInfo() {
     const totalValue = Number(cardActive.value) + Number(hostingActive.value ?? 0);
+
     setSummary({
       event: cardActive.type,
       hosting: hostingActive.type === 'Sem hotel' || hostingActive === '' ? false : true,
       value: String(totalValue.toFixed(2)),
     });
     props.setProgress(2);
+
+    const body = {
+      ticketName: cardActive.type,
+      hosting: hostingActive.type === 'Sem hotel' || hostingActive === '' ? false : true,
+      total: Number(totalValue).toFixed(2),
+    };
+
+    try {
+      const createOrder2 = await createOrder(body, token);
+      toast('Ingresso reservado com sucesso');
+    } catch (err) {
+      toast('Não foi possível reservar o ingresso');
+    }
+
   }
 
   console.log(eventInfo);
