@@ -17,19 +17,18 @@ import createEventOrder from '../../hooks/api/useOrder';
 import { toast } from 'react-toastify';
 import { useToken } from '../../hooks/useContext';
 
-
 const TicketChoise = (props) => {
   const { eventInfo } = useContext(EventInfoContext);
   const [cardActive, setCardActive] = useState('');
   const [hostingActive, setHostingActive] = useState('');
   const { ticket, ticketLoading } = getEventTickets();
   const { orderLoading, createOrder } = createEventOrder();
-  const isEnrolled = true;
 
   const { setSummary } = useContext(TicketSummaryContext);
+  const { confirmed, setConfirmed } = useContext(TicketSummaryContext);
 
   const token = useToken();
-
+  setConfirmed(false);
 
   /* para a msg de erro, se ticket === null e ticketLoading === false, imprimir msg, favor deletar esse comentario depois xD */
 
@@ -63,12 +62,11 @@ const TicketChoise = (props) => {
     } catch (err) {
       toast('Não foi possível reservar o ingresso');
     }
-
   }
 
   console.log(eventInfo);
 
-  return isEnrolled ? (
+  return ticket ? (
     <Container>
       <DashboardTitle>Ingresso e pagamento</DashboardTitle>
       <h6>Primeiro, escolha sua modalidade de ingresso</h6>

@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
 import styled from 'styled-components';
 
 import DashboardTitle from '../DashboardTitle';
 import TicketSummary from './TicketSummary';
 import PaymentConfirmed from './PaymentConfirmed';
+import CreditCard from './CreditCard';
+import TicketSummaryContext from '../../contexts/TicketSummaryContext';
 
 export default function PaymentChoice() {
-  const [confirmed, setConfirmed] = useState(false);
+  const { confirmed, setConfirmed } = useContext(TicketSummaryContext);
 
   return (
     <Container>
@@ -15,7 +17,7 @@ export default function PaymentChoice() {
       <h1>Ingresso escolhido</h1>
       <TicketSummary />
       <h1>Pagamento</h1>
-      {!confirmed ? <h2>Cartão</h2> : <PaymentConfirmed />}
+      {!confirmed ? <CreditCard /> : <PaymentConfirmed />}
     </Container>
   );
 }
