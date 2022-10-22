@@ -1,5 +1,5 @@
 import useAsync from '../useAsync';
-import useToken from '../useToken';
+import { useToken } from '../useContext';
 
 import * as enrollmentApi from '../../services/enrollmentApi';
 
