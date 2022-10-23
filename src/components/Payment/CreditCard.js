@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React,  { useState, useContext }  from 'react';
+import React, { useState, useContext } from 'react';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import TicketSummaryContext from '../../contexts/TicketSummaryContext';
@@ -25,7 +25,7 @@ class PaymentForm extends React.Component {
 
   render() {
     return (
-      <div id="PaymentForm">
+      <div id="PaymentForm" class="component">
         <Cards
           cvc={this.state.cvc}
           expiry={this.state.expiry}
@@ -38,10 +38,37 @@ class PaymentForm extends React.Component {
             type="tel"
             name="number"
             placeholder="Card Number"
+            class="big"
             onChange={this.handleInputChange}
             onFocus={this.handleInputFocus}
           />
-          ...
+          <p>E.g.: 49..., 51..., 36..., 37...</p>
+          <input
+            type="tel"
+            name="name"
+            placeholder="Name"
+            class="big"
+            onChange={this.handleInputChange}
+            onFocus={this.handleInputFocus}
+          />
+          <div class="side">
+            <input
+              type="tel"
+              name="expiry"
+              placeholder="Valid Thru"
+              class="small"
+              onChange={this.handleInputChange}
+              onFocus={this.handleInputFocus}
+            />
+            <input
+              type="tel"
+              name="cvc"
+              placeholder="CVC"
+              class="smaller"
+              onChange={this.handleInputChange}
+              onFocus={this.handleInputFocus}
+            />
+          </div>
         </form>
       </div>
     );
@@ -83,4 +110,47 @@ const Container = styled.div`
 
 const CreditCardComponent = styled.div`
   display: flex;
+
+  .component {
+    display: flex;
+  }
+
+  form {
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  input {
+    border-radius: 5px;
+    border: solid 1px #C3C3C3;
+    margin-bottom: 15px;
+    height: 40px;
+    font-size: 17px;
+    padding-left: 10px;
+  }
+
+  .big {
+    width: 300px;
+  }
+
+  p {
+    margin-top: -12px;
+    margin-bottom: 10px;
+    color: #C3C3C3;
+    font-size: 15px;
+  }
+
+  .small {
+    width: 190px;
+    margin-right: 10px;
+  }
+
+  .smaller {
+    width: 100px;
+  }
+
+  .side {
+    display: flex;
+  }
 `;
