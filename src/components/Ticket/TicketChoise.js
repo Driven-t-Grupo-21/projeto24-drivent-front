@@ -3,38 +3,57 @@ import styled from 'styled-components';
 
 import getEventTickets from '../../hooks/api/useTicket';
 
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-
 import DashboardTitle from '../DashboardTitle';
 import TicketCards from '../Ticket/TicketCards';
 import HostCards, { PutHotelCards } from '../Ticket/HostCard';
 import EventInfoContext from '../../contexts/EventInfoContext';
 
-const TicketChoise = () => {
+import TicketSummaryContext from '../../contexts/TicketSummaryContext';
+
+import createEventOrder from '../../hooks/api/useOrder';
+import { toast } from 'react-toastify';
+import { useToken } from '../../hooks/useContext';
+import DashboardLoading from '../DashboardLoading';
+import DashboardWarning from '../DashboardWarning';
+
+const TicketChoise = (props) => {
   const { eventInfo } = useContext(EventInfoContext);
   const [cardActive, setCardActive] = useState('');
   const [hostingActive, setHostingActive] = useState('');
   const { ticket, ticketLoading } = getEventTickets();
+  const { orderLoading, createOrder } = createEventOrder();
+  const { setSummary } = useContext(TicketSummaryContext);
+  const token = useToken();
 
-  function CreateInfo() {
+  async function CreateInfo() {
     const totalValue = Number(cardActive.value) + Number(hostingActive.value ?? 0);
-    console.log({
-      event: eventInfo.type,
+
+    setSummary({
+      event: cardActive.type,
       hosting: hostingActive.type === 'Sem hotel' || hostingActive === '' ? false : true,
       value: String(totalValue.toFixed(2)),
     });
+    props.setProgress(2);
+
+    const body = {
+      ticketName: cardActive.type,
+      hosting: hostingActive.type === 'Sem hotel' || hostingActive === '' ? false : true,
+      total: Number(totalValue).toFixed(2),
+    };
+
+    try {
+      const createOrder2 = await createOrder(body, token);
+      toast('Ingresso reservado com sucesso');
+    } catch (err) {
+      toast('Não foi possível reservar o ingresso');
+    }
   }
 
   if (ticketLoading) {
     return (
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-        <CircularProgress />
-      </Box>
+      <DashboardLoading />
     );
   }
-
-  console.log(eventInfo);
 
   return ticket ? (
     <Container>
@@ -42,10 +61,10 @@ const TicketChoise = () => {
       <h6>Primeiro, escolha sua modalidade de ingresso</h6>
       <section className="cardsSection">
         {eventInfo.Ticket.map((ticket, index) => (
-          <>
+          <div key={index}>
             <TicketCards
               isActive={false}
-              key={index}
+              
               cardActive={cardActive}
               setCardActive={setCardActive}
               setHostingActive={setHostingActive}
@@ -55,7 +74,7 @@ const TicketChoise = () => {
                 R$ {ticket.price}
               </p>
             </TicketCards>
-          </>
+          </div>
         ))}
       </section>
       {cardActive.type === 'Presencial' ? (
@@ -78,15 +97,8 @@ const TicketChoise = () => {
       )}
     </Container>
   ) : (
-    <>
-      <DashboardTitle>Ingresso e pagamento</DashboardTitle>
-      <Warning>
-        <h1>
-          Você precisa completar sua inscrição antes <br />
-          de prosseguir pra escolha de ingresso
-        </h1>
-      </Warning>
-    </>
+    <DashboardWarning title="Ingresso e pagamento">Você precisa completar sua inscrição antes <br />
+    de prosseguir pra escolha de ingresso</DashboardWarning>
   );
 };
 
