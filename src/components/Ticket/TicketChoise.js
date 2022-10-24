@@ -28,7 +28,6 @@ const TicketChoise = (props) => {
   const { confirmed, setConfirmed } = useContext(TicketSummaryContext);
 
   const token = useToken();
-  setConfirmed(false);
 
   /* para a msg de erro, se ticket === null e ticketLoading === false, imprimir msg, favor deletar esse comentario depois xD */
 
