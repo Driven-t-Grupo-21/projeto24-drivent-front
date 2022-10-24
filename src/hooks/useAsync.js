@@ -16,7 +16,7 @@ export default function useAsync(handler, immediate = true) {
       return data;
     } catch (e) {
       console.log(e);
-      setError(e.response.data.message);
+      setError(e.response?.data.message);
       setLoading(false);
       throw e;
     }

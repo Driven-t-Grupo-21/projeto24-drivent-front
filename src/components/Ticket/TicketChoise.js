@@ -23,8 +23,9 @@ const TicketChoise = (props) => {
   const { ticket, ticketLoading } = getEventTickets();
   const { orderLoading, createOrder } = createEventOrder();
   const { setSummary } = useContext(TicketSummaryContext);
+  const { confirmed, setConfirmed } = useContext(TicketSummaryContext);
   const token = useToken();
-
+  setConfirmed(false);
   async function CreateInfo() {
     const totalValue = Number(cardActive.value) + Number(hostingActive.value ?? 0);
 
@@ -50,9 +51,7 @@ const TicketChoise = (props) => {
   }
 
   if (ticketLoading) {
-    return (
-      <DashboardLoading />
-    );
+    return <DashboardLoading />;
   }
 
   return ticket ? (
@@ -64,7 +63,6 @@ const TicketChoise = (props) => {
           <div key={index}>
             <TicketCards
               isActive={false}
-              
               cardActive={cardActive}
               setCardActive={setCardActive}
               setHostingActive={setHostingActive}
@@ -97,8 +95,10 @@ const TicketChoise = (props) => {
       )}
     </Container>
   ) : (
-    <DashboardWarning title="Ingresso e pagamento">Você precisa completar sua inscrição antes <br />
-    de prosseguir pra escolha de ingresso</DashboardWarning>
+    <DashboardWarning title="Ingresso e pagamento">
+      Você precisa completar sua inscrição antes <br />
+      de prosseguir pra escolha de ingresso
+    </DashboardWarning>
   );
 };
 
