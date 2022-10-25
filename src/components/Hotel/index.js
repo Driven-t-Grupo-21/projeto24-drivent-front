@@ -12,7 +12,22 @@ function HotelPage() {
   if (hotelLoading) return <DashboardLoading />;
 
   /* alterar a msg de erro para imprimir conforme figma, e apagar o comentário */
-  if (hotelError) return <DashboardWarning title="Escolha de hotel e quarto">{hotelError}</DashboardWarning>;
+  if (hotelError)
+    return (
+      <DashboardWarning title="Escolha de hotel e quarto">
+        {hotelError === 'Order not completed' ? (
+          <>
+            Você precisa ter confirmado pagamento antes <br />
+            de fazer a escolha de hospedagem
+          </>
+        ) : (
+          <>
+            Sua modalidade de ingresso não inclui hospedagem <br />
+            Prossiga para a escolha de atividades
+          </>
+        )}
+      </DashboardWarning>
+    );
 
   console.log(hotel, hotelLoading, hotelError);
   return (
