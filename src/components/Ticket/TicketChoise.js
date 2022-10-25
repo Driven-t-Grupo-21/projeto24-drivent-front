@@ -3,9 +3,6 @@ import styled from 'styled-components';
 
 import getEventTickets from '../../hooks/api/useTicket';
 
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-
 import DashboardTitle from '../DashboardTitle';
 import TicketCards from '../Ticket/TicketCards';
 import HostCards, { PutHotelCards } from '../Ticket/HostCard';
@@ -16,6 +13,8 @@ import TicketSummaryContext from '../../contexts/TicketSummaryContext';
 import createEventOrder from '../../hooks/api/useOrder';
 import { toast } from 'react-toastify';
 import { useToken } from '../../hooks/useContext';
+import DashboardLoading from '../DashboardLoading';
+import DashboardWarning from '../DashboardWarning';
 
 const TicketChoise = (props) => {
   const { eventInfo } = useContext(EventInfoContext);
@@ -23,22 +22,9 @@ const TicketChoise = (props) => {
   const [hostingActive, setHostingActive] = useState('');
   const { ticket, ticketLoading } = getEventTickets();
   const { orderLoading, createOrder } = createEventOrder();
-
   const { setSummary } = useContext(TicketSummaryContext);
   const { confirmed, setConfirmed } = useContext(TicketSummaryContext);
-
   const token = useToken();
-
-  /* para a msg de erro, se ticket === null e ticketLoading === false, imprimir msg, favor deletar esse comentario depois xD */
-
-  if (ticketLoading) {
-    return (
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
   async function CreateInfo() {
     const totalValue = Number(cardActive.value) + Number(hostingActive.value ?? 0);
 
@@ -63,7 +49,9 @@ const TicketChoise = (props) => {
     }
   }
 
-  console.log(eventInfo);
+  if (ticketLoading) {
+    return <DashboardLoading />;
+  }
 
   return ticket ? (
     <Container>
@@ -71,10 +59,9 @@ const TicketChoise = (props) => {
       <h6>Primeiro, escolha sua modalidade de ingresso</h6>
       <section className="cardsSection">
         {eventInfo.Ticket.map((ticket, index) => (
-          <>
+          <div key={index}>
             <TicketCards
               isActive={false}
-              key={index}
               cardActive={cardActive}
               setCardActive={setCardActive}
               setHostingActive={setHostingActive}
@@ -84,7 +71,7 @@ const TicketChoise = (props) => {
                 R$ {ticket.price}
               </p>
             </TicketCards>
-          </>
+          </div>
         ))}
       </section>
       {cardActive.type === 'Presencial' ? (
@@ -107,15 +94,10 @@ const TicketChoise = (props) => {
       )}
     </Container>
   ) : (
-    <>
-      <DashboardTitle>Ingresso e pagamento</DashboardTitle>
-      <Warning>
-        <h1>
-          Você precisa completar sua inscrição antes <br />
-          de prosseguir pra escolha de ingresso
-        </h1>
-      </Warning>
-    </>
+    <DashboardWarning title="Ingresso e pagamento">
+      Você precisa completar sua inscrição antes <br />
+      de prosseguir pra escolha de ingresso
+    </DashboardWarning>
   );
 };
 

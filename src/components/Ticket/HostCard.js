@@ -46,7 +46,7 @@ export default HostCards;
 
 const Container = styled.div`
   border: ${(props) => (props.active ? '1px solid #FFEED2' : '1px solid rgba(0, 0, 0, 0.3)')};
-  width: 145px;
+  min-width: 145px;
   box-sizing: border-box;
   padding: 0 30px 0 30px;
   width: ${(props) => (props.width ? `${props.width}` : 'fit-content')};
