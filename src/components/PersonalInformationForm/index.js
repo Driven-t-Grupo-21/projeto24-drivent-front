@@ -34,8 +34,12 @@ export default function PersonalInformationForm() {
   const { handleSubmit, handleChange, data, errors, setData, customHandleChange } = useForm({
     validations: FormValidations,
 
-    onSubmit: async(data) => {
-      if (!data.birthday) {
+    onSubmit: async( data ) => {
+      const now = new Date(Date.now());
+      const birthDate = Date.parse( dayjs( data.birthday ) );
+      const validateYear = Date.parse(`${now.getMonth()} ${now.getDay()},${now.getFullYear()-18}`);
+
+      if (!data.birthday || validateYear<birthDate) {
         toast('Usuário deve ter mais de 18 anos!');
         return;
       }
