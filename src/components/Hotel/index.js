@@ -27,22 +27,43 @@ function HotelPage() {
     return (
       <RoomsBox>
         {allRooms.map((room) => {
-          return (
-            <Room
-              disabled={room.availableBeds === 0 ? true : false}
-              onClick={() => setRoomData(room.id)}
-              backColor={roomData === room.id ? '#FFEED2' : 'transparent'}
-            >
-              <p>{room.id}</p>
-              <Icons>
-                <BsPerson size={25} />
-                <BsPerson size={25} />
-                <BsFillPersonFill size={25} color={roomData === room.id ? '#FF4791' : '#000000'} />
-              </Icons>
-            </Room>
-          );
+          return <PutRoom room={room} />;
         })}
       </RoomsBox>
+    );
+  }
+
+  function PutRoom({ room }) {
+    let badsArray = [];
+    for (let i = 0; i < room.beds; i++) {
+      if (room.beds - room.availableBeds <= i) {
+        badsArray.push(true);
+      } else {
+        badsArray.push(false);
+      }
+    }
+    return (
+      <Room
+        disabled={room.availableBeds === 0 ? true : false}
+        onClick={() => {
+          setRoomData(room.id);
+        }}
+        backColor={roomData === room.id ? '#FFEED2' : 'transparent'}
+      >
+        <p>{room.id}</p>
+        <Icons>
+          {badsArray.map((bed, index) => {
+            if (bed === false || (index === badsArray.length - 1 && roomData === room.id))
+              return (
+                <BsFillPersonFill
+                  size={25}
+                  color={roomData === room.id && index === badsArray.length - 1 ? '#FF4791' : ''}
+                />
+              );
+            else return <BsPerson size={25} />;
+          })}
+        </Icons>
+      </Room>
     );
   }
   return (
