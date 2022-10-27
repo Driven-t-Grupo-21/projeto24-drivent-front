@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { BsPerson, BsFillPersonFill } from 'react-icons/bs';
 
 import styled from 'styled-components';
@@ -8,11 +8,12 @@ import DashboardLoading from '../DashboardLoading';
 import DashboardSubtitle from '../DashboardSubtitle';
 import DashboardTitle from '../DashboardTitle';
 import DashboardWarning from '../DashboardWarning';
+import RoomContext from '../../contexts/RoomContext';
 
 function HotelPage() {
   const { hotel, hotelLoading, hotelError } = getEventHotelsInfo();
 
-  const [selectedRoom, setSelectedRoom] = useState('');
+  const { roomData, setRoomData } = useContext(RoomContext);
 
   if (hotelLoading) return <DashboardLoading />;
 
@@ -25,18 +26,18 @@ function HotelPage() {
   function ShowRooms({ allRooms }) {
     return (
       <RoomsBox>
-        {allRooms.map((room, index) => {
+        {allRooms.map((room) => {
           return (
             <Room
               disabled={room.availableBeds === 0 ? true : false}
-              onClick={() => setSelectedRoom(room.id)}
-              backColor={selectedRoom === room.id ? '#FFEED2' : 'transparent'}
+              onClick={() => setRoomData(room.id)}
+              backColor={roomData === room.id ? '#FFEED2' : 'transparent'}
             >
-              <p>{index + 1}</p>
+              <p>{room.id}</p>
               <Icons>
                 <BsPerson size={25} />
                 <BsPerson size={25} />
-                <BsFillPersonFill size={25} color={selectedRoom === room.id ? '#FF4791' : '#000000'} />
+                <BsFillPersonFill size={25} color={roomData === room.id ? '#FF4791' : '#000000'} />
               </Icons>
             </Room>
           );
@@ -49,10 +50,10 @@ function HotelPage() {
       <DashboardTitle>Escolha de hotel e quarto</DashboardTitle>
       <DashboardSubtitle>Primeiro escolha seu hotel</DashboardSubtitle>
       <ShowRooms allRooms={allRooms} />
-      {selectedRoom === '' ? (
+      {roomData === '' ? (
         ''
       ) : (
-        <Button className="bookingButton" onClick={() => console.log(selectedRoom)}>
+        <Button className="bookingButton" onClick={() => console.log(roomData)}>
           RESERVAR QUARTO
         </Button>
       )}
