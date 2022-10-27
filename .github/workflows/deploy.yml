@@ -10,7 +10,7 @@ env:
   REACT_APP_API_BASE_URL: /api
 jobs:
   build:
-    runs-on: drivent
+    runs-on: self-hosted
     timeout-minutes: 20
     steps:
       - name: Checkout
