@@ -25,6 +25,7 @@ const TicketChoise = (props) => {
   const { setSummary } = useContext(TicketSummaryContext);
   const { confirmed, setConfirmed } = useContext(TicketSummaryContext);
   const token = useToken();
+
   async function CreateInfo() {
     const totalValue = Number(cardActive.value) + Number(hostingActive.value ?? 0);
 
