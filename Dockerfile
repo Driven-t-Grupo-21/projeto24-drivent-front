@@ -2,5 +2,5 @@ FROM node:16.15
 WORKDIR /usr/src/drivent
 COPY ./package*.json ./
 COPY ./.husky ./
-RUN npm install --legacy-peer-deps --no-update-notifier
+RUN npm install --legacy-peer-deps
 COPY . .
