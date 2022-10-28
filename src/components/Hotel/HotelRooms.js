@@ -39,7 +39,7 @@ function HotelRooms({ rooms }) {
         }}
         backColor={roomData === room.id ? '#FFEED2' : 'transparent'}
       >
-        <p>{room.id}</p>
+        <p>{room.number}</p>
         <Icons>
           {badsArray.map((bed, index) => {
             if (bed === false || (index === badsArray.length - 1 && roomData === room.id))
