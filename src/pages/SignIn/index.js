@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import GithubButton from 'react-github-login-button';
 
 import AuthLayout from '../../layouts/Auth';
 
@@ -24,7 +25,7 @@ export default function SignIn() {
   const { setUserData } = useContext(UserContext);
 
   const navigate = useNavigate();
-  
+
   async function submit(event) {
     event.preventDefault();
 
@@ -36,7 +37,7 @@ export default function SignIn() {
     } catch (err) {
       toast('Não foi possível fazer o login!');
     }
-  } 
+  }
 
   return (
     <AuthLayout background={eventInfo.backgroundImageUrl}>
@@ -52,6 +53,7 @@ export default function SignIn() {
           <Button type="submit" color="primary" fullWidth disabled={loadingSignIn}>Entrar</Button>
         </form>
       </Row>
+      <GithubButton onClick={() => { console.log('Github button clicked'); }} />
       <Row>
         <Link to="/enroll">Não possui login? Inscreva-se</Link>
       </Row>
