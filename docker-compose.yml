@@ -14,6 +14,6 @@ services:
     command: npm run build
     environment:
       NODE_ENV: production
-      REACT_APP_API_BASE_URL: /api
+      REACT_APP_API_BASE_URL: ${REACT_APP_API_BASE_URL}
     volumes:
       - /usr/src/drivent/front-end:/usr/src/drivent/build
