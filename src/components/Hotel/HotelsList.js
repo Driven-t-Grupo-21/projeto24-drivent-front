@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import HotelCard from './HotelCards';
 import HotelRooms from './HotelRooms';
 
-function HotelsList({ hotels }) {
+function HotelsList({ hotels, setProgress }) {
   const [rooms, setRooms] = React.useState();
   return (
     <>
@@ -16,7 +16,7 @@ function HotelsList({ hotels }) {
           );
         })}
       </Container>
-      {rooms ? <HotelRooms rooms={rooms} /> : null}
+      {rooms ? <HotelRooms rooms={rooms} setProgress={setProgress} /> : null}
     </>
   );
 }

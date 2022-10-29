@@ -2,13 +2,22 @@ import React, { useContext } from 'react';
 
 import { BsPerson, BsFillPersonFill } from 'react-icons/bs';
 
+import { toast } from 'react-toastify';
+
 import DashboardSubtitle from '../DashboardSubtitle';
 import RoomContext from '../../contexts/RoomContext';
 
 import styled from 'styled-components';
+import { useEventInfo, useToken } from '../../hooks/useContext';
+import createReserveRoom from '../../hooks/api/useRoom';
 
-function HotelRooms({ rooms }) {
+function HotelRooms({ rooms, setProgress }) {
   const allRooms = rooms;
+
+  const { roomLoading, reserveRoom } = createReserveRoom();
+
+  const { id } = useEventInfo();
+  const token = useToken();
 
   const { roomData, setRoomData } = useContext(RoomContext);
 
@@ -56,6 +65,16 @@ function HotelRooms({ rooms }) {
     );
   }
 
+  async function CreateReserveRoom() {
+    try {
+      await reserveRoom(token, id, roomData);
+      toast('Quarto reservado com sucesso');
+      setProgress(2);
+    } catch (err) {
+      toast('Não foi possível reservar o quarto');
+    }
+  }
+
   return (
     <>
       <DashboardSubtitle>Ótima pedida! Agora escolha seu quarto:</DashboardSubtitle>
@@ -63,7 +82,12 @@ function HotelRooms({ rooms }) {
       {roomData === '' ? (
         ''
       ) : (
-        <Button className="bookingButton" onClick={() => console.log(roomData)}>
+        <Button
+          className="bookingButton"
+          onClick={() => {
+            CreateReserveRoom();
+          }}
+        >
           RESERVAR QUARTO
         </Button>
       )}
