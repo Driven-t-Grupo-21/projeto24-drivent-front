@@ -8,7 +8,7 @@ export default function Hotel() {
   case 1:
     return <HotelPage setProgress={setProgress} />;
   case 2:
-    return <ReservationSummary />;
+    return <ReservationSummary setProgress={setProgress} />;
   default:
     return <>default</>;
   }

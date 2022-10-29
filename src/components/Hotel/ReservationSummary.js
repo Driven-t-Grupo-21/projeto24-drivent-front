@@ -3,7 +3,7 @@ import { useContext } from 'react';
 
 import ReservationSummaryContext from '../../contexts/ReservationSummaryContext';
 
-export default function ReservationSummary() {
+export default function ReservationSummary({ setProgress }) {
   //const { summary } = useContext(ReservationSummaryContext);
 
   let reservation = {
@@ -25,8 +25,8 @@ export default function ReservationSummary() {
     }
   }
 
-  function changeRoom() {
-    alert('Clicked.');
+  async function changeRoom() {
+    setProgress(1);
   }
 
   return (
@@ -64,6 +64,7 @@ const Reservation = styled.div`
     outline: none;
     border: 0;
     box-shadow: 0px 2px 10px 0px #00000040;
+    cursor: pointer;
   }
 `;
 
