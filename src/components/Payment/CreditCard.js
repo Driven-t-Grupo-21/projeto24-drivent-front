@@ -25,7 +25,7 @@ class PaymentForm extends React.Component {
 
   render() {
     return (
-      <div id="PaymentForm" class="component">
+      <div id="PaymentForm" className="component">
         <Cards
           cvc={this.state.cvc}
           expiry={this.state.expiry}
@@ -38,7 +38,7 @@ class PaymentForm extends React.Component {
             type="tel"
             name="number"
             placeholder="Card Number"
-            class="big"
+            className="big"
             onChange={this.handleInputChange}
             onFocus={this.handleInputFocus}
           />
@@ -47,16 +47,16 @@ class PaymentForm extends React.Component {
             type="tel"
             name="name"
             placeholder="Name"
-            class="big"
+            className="big"
             onChange={this.handleInputChange}
             onFocus={this.handleInputFocus}
           />
-          <div class="side">
+          <div className="side">
             <input
               type="tel"
               name="expiry"
               placeholder="Valid Thru"
-              class="small"
+              className="small"
               onChange={this.handleInputChange}
               onFocus={this.handleInputFocus}
             />
@@ -64,7 +64,7 @@ class PaymentForm extends React.Component {
               type="tel"
               name="cvc"
               placeholder="CVC"
-              class="smaller"
+              className="smaller"
               onChange={this.handleInputChange}
               onFocus={this.handleInputFocus}
             />

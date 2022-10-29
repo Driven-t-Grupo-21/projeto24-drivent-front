@@ -26,8 +26,6 @@ export default function useAsync(handler, immediate = true) {
     if (immediate) {
       act();
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
