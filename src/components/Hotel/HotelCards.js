@@ -3,14 +3,13 @@ import styled from 'styled-components';
 import RoomContext from '../../contexts/RoomContext';
 
 function HotelCard({ hotel, setRooms }) {
-  const [isActive, setIsActive] = useState(false);
-  const { setRoomData } = useContext(RoomContext);
-  let roomTypesMessage = [];
+  const { setRoomData, hotelData, setHotelData } = useContext(RoomContext);
+  const [roomTypesMessage, setRoomTypesMessage] = useState('');
 
   useState(() => {
-    if (hotel.hotelRoomsType.includes('Single')) roomTypesMessage.push('Single');
-    if (hotel.hotelRoomsType.includes('Double')) roomTypesMessage.push('Double');
-    if (hotel.hotelRoomsType.includes('Triple')) roomTypesMessage.push('Triple');
+    if (hotel.hotelRoomsType.includes('Single')) setRoomTypesMessage(roomTypesMessage + 'Single');
+    if (hotel.hotelRoomsType.includes('Double')) setRoomTypesMessage(roomTypesMessage + 'Double');
+    if (hotel.hotelRoomsType.includes('Triple')) setRoomTypesMessage(roomTypesMessage + 'Triple');
   }, []);
 
   return (
@@ -18,18 +17,15 @@ function HotelCard({ hotel, setRooms }) {
       onClick={() => {
         setRoomData('');
         setRooms(hotel.Rooms);
-        setIsActive(!isActive);
+        setHotelData(hotel);
       }}
-      isActive={isActive}
+      isActive={hotelData.id === hotel.id ? true : false}
     >
-      <img
-        src="https://www.melhoresdestinos.com.br/wp-content/uploads/2021/04/resort-salinas-maragogi-capa-05.jpg"
-        alt={hotel.name}
-      />
+      <img src={hotel.logoImageUrl} alt={hotel.name} />
       <div className="hotelInfo">
         <h6>{hotel.name}</h6>
         <HotelSubtitle>Tipos de Acomodação:</HotelSubtitle>
-        <p>{roomTypesMessage.join(', ')}</p>
+        <p>{roomTypesMessage}</p>
         <HotelSubtitle>Vagas disponíveis:</HotelSubtitle>
         <p>{hotel.availableHotelBeds}</p>
       </div>
