@@ -7,7 +7,7 @@ import DashboardTitle from '../DashboardTitle';
 import DashboardWarning from '../DashboardWarning';
 import HotelsList from './HotelsList';
 
-function HotelPage() {
+function HotelPage({ setProgress }) {
   const { hotel, hotelLoading, hotelError } = getEventHotelsInfo();
 
   if (hotelLoading) return <DashboardLoading />;
@@ -33,7 +33,7 @@ function HotelPage() {
     <>
       <DashboardTitle>Escolha de hotel e quarto</DashboardTitle>
       <DashboardSubtitle>Primeiro escolha seu hotel</DashboardSubtitle>
-      <HotelsList hotels={hotel} />
+      <HotelsList hotels={hotel} setProgress={setProgress} />
     </>
   );
 }

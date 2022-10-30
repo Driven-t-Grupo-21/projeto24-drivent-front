@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
+import RoomContext from '../../contexts/RoomContext';
 
 function HotelCard({ hotel, setRooms }) {
   const [isActive, setIsActive] = useState(false);
+  const { setRoomData } = useContext(RoomContext);
   let roomTypesMessage = [];
 
   useState(() => {
@@ -14,6 +16,7 @@ function HotelCard({ hotel, setRooms }) {
   return (
     <Container
       onClick={() => {
+        setRoomData('');
         setRooms(hotel.Rooms);
         setIsActive(!isActive);
       }}
