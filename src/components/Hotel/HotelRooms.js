@@ -24,8 +24,8 @@ function HotelRooms({ rooms, setProgress }) {
   function ShowRooms({ allRooms }) {
     return (
       <RoomsBox>
-        {allRooms.map((room) => {
-          return <PutRoom room={room} />;
+        {allRooms.map((room, index) => {
+          return <PutRoom room={room} key={index}/>;
         })}
       </RoomsBox>
     );
