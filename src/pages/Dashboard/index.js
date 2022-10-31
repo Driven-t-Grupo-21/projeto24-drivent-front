@@ -29,6 +29,22 @@ const Container = styled.div`
   overflow-y: auto;
   font-family: 'Roboto', sans-serif;
 
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
   @media (max-width: 600px) {
     height: calc(100vh - 80px);
     padding: 20px;

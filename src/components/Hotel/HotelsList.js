@@ -1,14 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
+import DashboardWarning from '../DashboardWarning';
 import HotelCard from './HotelCards';
 import HotelRooms from './HotelRooms';
 
 function HotelsList({ hotels, setProgress }) {
   const [rooms, setRooms] = React.useState();
+
   return (
     <>
       <Container>
-        {hotels.roomsAvailable.map((hotel) => {
+        {hotels.hotelsAvailable.map((hotel) => {
           return (
             <>
               <HotelCard hotel={hotel} setRooms={setRooms} />
@@ -28,7 +30,7 @@ const Container = styled.ul`
   gap: 20px;
   overflow-x: auto;
   margin-top: 20px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 
   ::-webkit-scrollbar {
     height: 4px;

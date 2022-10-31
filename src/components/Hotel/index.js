@@ -29,6 +29,10 @@ function HotelPage({ setProgress }) {
       </DashboardWarning>
     );
 
+  if (hotel.hotelsAvailable.length === 0) return <DashboardWarning>This event has no hotels</DashboardWarning>;
+
+  console.log(hotel);
+
   return (
     <>
       <DashboardTitle>Escolha de hotel e quarto</DashboardTitle>
