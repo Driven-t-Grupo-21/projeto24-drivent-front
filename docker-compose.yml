@@ -15,6 +15,6 @@ services:
     environment:
       NODE_ENV: production
       REACT_APP_API_BASE_URL: ${REACT_APP_API_BASE_URL}
-      GENERATE_SOURCEMAP: false
+      GENERATE_SOURCEMAP: 'false'
     volumes:
       - /usr/src/drivent/front-end:/usr/src/drivent/build
