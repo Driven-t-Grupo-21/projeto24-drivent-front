@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
+import RoomContext from '../../contexts/RoomContext';
 
 import getEventHotelsInfo from '../../hooks/api/useHotel';
 import DashboardLoading from '../DashboardLoading';
@@ -8,7 +9,12 @@ import DashboardWarning from '../DashboardWarning';
 import HotelsList from './HotelsList';
 
 function HotelPage({ setProgress }) {
+  const { setHotelData } = useContext(RoomContext);
   const { hotel, hotelLoading, hotelError } = getEventHotelsInfo();
+
+  useEffect(() => {
+    setHotelData('');
+  }, []);
 
   if (hotelLoading) return <DashboardLoading />;
 
@@ -28,6 +34,8 @@ function HotelPage({ setProgress }) {
         )}
       </DashboardWarning>
     );
+
+  if (hotel.hotelsAvailable.length === 0) return <DashboardWarning>This event has no hotels</DashboardWarning>;
 
   return (
     <>

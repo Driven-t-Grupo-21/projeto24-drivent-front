@@ -10,6 +10,7 @@ import RoomContext from '../../contexts/RoomContext';
 import styled from 'styled-components';
 import { useEventInfo, useToken } from '../../hooks/useContext';
 import createReserveRoom from '../../hooks/api/useRoom';
+import ReservationSummaryContext from '../../contexts/ReservationSummaryContext';
 
 function HotelRooms({ rooms, setProgress }) {
   const allRooms = rooms;
@@ -20,6 +21,7 @@ function HotelRooms({ rooms, setProgress }) {
   const token = useToken();
 
   const { roomData, setRoomData } = useContext(RoomContext);
+  const { summary, setSummary } = useContext(ReservationSummaryContext);
 
   function ShowRooms({ allRooms }) {
     return (
@@ -45,6 +47,7 @@ function HotelRooms({ rooms, setProgress }) {
         disabled={room.availableBeds === 0 ? true : false}
         onClick={() => {
           setRoomData(room.id);
+          setSummary({ ...summary, roomNumber: room.number, roomType: room.beds });
         }}
         backColor={roomData === room.id ? '#FFEED2' : 'transparent'}
       >
@@ -100,6 +103,7 @@ export default HotelRooms;
 const RoomsBox = styled.div`
   display: flex;
   flex-wrap: wrap;
+  margin-top: 20px;
 `;
 
 const Button = styled.button`
@@ -123,7 +127,7 @@ const Room = styled.button`
   width: 190px;
   height: 45px;
   display: flex;
-
+  align-items: center;
   margin: 0 15px 15px 0;
 
   border-radius: 10px;
