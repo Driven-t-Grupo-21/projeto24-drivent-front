@@ -1,11 +1,13 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import RoomContext from '../../contexts/RoomContext';
+import ReservationSummaryContext from '../../contexts/ReservationSummaryContext';
 
 function HotelCard({ hotel, setRooms }) {
   const [isActive, setIsActive] = useState(false);
   const { setRoomData } = useContext(RoomContext);
   let roomTypesMessage = [];
+  const { summary, setSummary } = useContext(ReservationSummaryContext);
 
   useState(() => {
     if (hotel.hotelRoomsType.includes('Single')) roomTypesMessage.push('Single');
@@ -19,13 +21,11 @@ function HotelCard({ hotel, setRooms }) {
         setRoomData('');
         setRooms(hotel.Rooms);
         setIsActive(!isActive);
+        setSummary({ hotel: hotel.name, hotelPicture: hotel.logoImageUrl });
       }}
       isActive={isActive}
     >
-      <img
-        src="https://www.melhoresdestinos.com.br/wp-content/uploads/2021/04/resort-salinas-maragogi-capa-05.jpg"
-        alt={hotel.name}
-      />
+      <img src={hotel.logoImageUrl} alt={hotel.name} />
       <div className="hotelInfo">
         <h6>{hotel.name}</h6>
         <HotelSubtitle>Tipos de Acomodação:</HotelSubtitle>
