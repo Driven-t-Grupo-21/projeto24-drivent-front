@@ -4,14 +4,19 @@ import { useContext } from 'react';
 import ReservationSummaryContext from '../../contexts/ReservationSummaryContext';
 
 export default function ReservationSummary({ setProgress }) {
-  //const { summary } = useContext(ReservationSummaryContext);
+  const { summary: reservation } = useContext(ReservationSummaryContext);
 
-  let reservation = {
-    hotel: 'Nome do Hotel',
-    hotelPicture: 'https://www.melhoresdestinos.com.br/wp-content/uploads/2021/04/resort-salinas-maragogi-capa-05.jpg',
-    roomNumber: 101,
-    roomType: 'Double',
-  };
+  function roomTypeName() {
+    if (reservation.roomType === 1) {
+      return (reservation.roomType = 'Single');
+    }
+    if (reservation.roomType === 2) {
+      return (reservation.roomType = 'Double');
+    }
+    if (reservation.roomType === 3) {
+      return (reservation.roomType = 'Triple');
+    }
+  }
 
   function otherGuests() {
     if (reservation.roomType === 'Single') {
@@ -37,7 +42,7 @@ export default function ReservationSummary({ setProgress }) {
         <h3>{reservation.hotel}</h3>
         <h4>Quarto reservado</h4>
         <h5>
-          {reservation.roomNumber} ({reservation.roomType})
+          {reservation.roomNumber} ({roomTypeName()})
         </h5>
         <h4>Pessoas no seu quarto</h4>
         {otherGuests()}

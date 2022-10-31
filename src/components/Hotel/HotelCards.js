@@ -1,10 +1,13 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import RoomContext from '../../contexts/RoomContext';
+import ReservationSummaryContext from '../../contexts/ReservationSummaryContext';
 
 function HotelCard({ hotel, setRooms }) {
+  const { summary, setSummary } = useContext(ReservationSummaryContext);
   const { setRoomData, hotelData, setHotelData } = useContext(RoomContext);
   const [roomTypesMessage, setRoomTypesMessage] = useState('');
+
 
   useState(() => {
     if (hotel.hotelRoomsType.includes('Single')) setRoomTypesMessage(roomTypesMessage + 'Single');
@@ -17,7 +20,9 @@ function HotelCard({ hotel, setRooms }) {
       onClick={() => {
         setRoomData('');
         setRooms(hotel.Rooms);
+        setSummary({ hotel: hotel.name, hotelPicture: hotel.logoImageUrl });
         setHotelData(hotel);
+
       }}
       isActive={hotelData.id === hotel.id ? true : false}
     >
