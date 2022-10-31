@@ -33,9 +33,6 @@ export default function MultiSelect({
           onChange={onChange}
           input={
             <OutlinedInput
-              labelWidth={
-                ReactDOM.findDOMNode(inputLabelRef.current)?.offsetWidth
-              }
               name={name}
               id={id}
             />

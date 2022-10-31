@@ -24,8 +24,8 @@ function HotelRooms({ rooms, setProgress }) {
   function ShowRooms({ allRooms }) {
     return (
       <RoomsBox>
-        {allRooms.map((room) => {
-          return <PutRoom room={room} />;
+        {allRooms.map((room, index) => {
+          return <PutRoom room={room} key={index}/>;
         })}
       </RoomsBox>
     );
@@ -100,6 +100,7 @@ export default HotelRooms;
 const RoomsBox = styled.div`
   display: flex;
   flex-wrap: wrap;
+  margin-top: 20px;
 `;
 
 const Button = styled.button`
@@ -123,7 +124,7 @@ const Room = styled.button`
   width: 190px;
   height: 45px;
   display: flex;
-
+  align-items: center;
   margin: 0 15px 15px 0;
 
   border-radius: 10px;
