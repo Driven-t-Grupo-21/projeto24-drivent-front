@@ -28,7 +28,7 @@ const TicketChoise = (props) => {
     setSummary({
       event: userOrder.Ticket.type,
       hosting: userOrder.hosting,
-      value: userOrder.total,
+      total: userOrder.total,
     });
     setConfirmed(true);
     props.setProgress(2);
@@ -40,15 +40,9 @@ const TicketChoise = (props) => {
     setSummary({
       event: cardActive.type,
       hosting: hostingActive.type === 'Sem hotel' || hostingActive === '' ? false : true,
-      value: String(totalValue.toFixed(2)),
+      total: String(totalValue.toFixed(2)),
     });
-    props.setProgress(2);
-
-    const body = {
-      ticketName: cardActive.type,
-      hosting: hostingActive.type === 'Sem hotel' || hostingActive === '' ? false : true,
-      total: Number(totalValue).toFixed(2),
-    };
+    props.setProgress( 2 );
   }
 
   if (ticketLoading) {

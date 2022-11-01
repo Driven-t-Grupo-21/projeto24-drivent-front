@@ -91,7 +91,7 @@ async function PayOrder(body, setConfirmed, token) {
 }
 
 export default function CreditCard() {
-  const { confirmed, setConfirmed } = useContext(TicketSummaryContext);
+  const { summary, setConfirmed } = useContext(TicketSummaryContext);
   const token = useToken();
 
   return (
@@ -102,7 +102,7 @@ export default function CreditCard() {
       <button
         className="bookingButton"
         onClick={() => {
-          PayOrder(confirmed, setConfirmed, token);
+          PayOrder(summary, setConfirmed, token);
         }}
       >
         FINALIZAR PAGAMENTO
