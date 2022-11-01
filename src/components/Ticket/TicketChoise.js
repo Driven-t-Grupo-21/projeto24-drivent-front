@@ -11,6 +11,7 @@ import EventInfoContext from '../../contexts/EventInfoContext';
 import TicketSummaryContext from '../../contexts/TicketSummaryContext';
 
 import createEventOrder from '../../hooks/api/useOrder';
+import getUserOrderByEvent from '../../hooks/api/useUserOrder';
 import DashboardLoading from '../DashboardLoading';
 import DashboardWarning from '../DashboardWarning';
 
@@ -20,8 +21,18 @@ const TicketChoise = (props) => {
   const [hostingActive, setHostingActive] = useState('');
   const { ticket, ticketLoading } = getEventTickets();
   const { orderLoading, createOrder } = createEventOrder();
-  const { setSummary } = useContext(TicketSummaryContext);
-  const { confirmed, setConfirmed } = useContext(TicketSummaryContext);
+  const { confirmed, setSummary, setConfirmed } = useContext(TicketSummaryContext);
+  const { userOrder, getUserOrder } = getUserOrderByEvent();
+
+  if (userOrder) {
+    setSummary({
+      event: userOrder.Ticket.type,
+      hosting: userOrder.hosting,
+      value: userOrder.total,
+    });
+    setConfirmed(true);
+    props.setProgress(2);
+  }
 
   async function CreateInfo() {
     const totalValue = Number(cardActive.value) + Number(hostingActive.value ?? 0);
