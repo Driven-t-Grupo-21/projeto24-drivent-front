@@ -3,6 +3,10 @@ import React, { useState, useContext } from 'react';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import TicketSummaryContext from '../../contexts/TicketSummaryContext';
+import { createOrder } from '../../services/orderApi';
+import { useToken } from '../../hooks/useContext';
+
+import { toast } from 'react-toastify';
 
 class PaymentForm extends React.Component {
   state = {
@@ -15,13 +19,13 @@ class PaymentForm extends React.Component {
 
   handleInputFocus = (e) => {
     this.setState({ focus: e.target.name });
-  }
+  };
 
   handleInputChange = (e) => {
     const { name, value } = e.target;
 
     this.setState({ [name]: value });
-  }
+  };
 
   render() {
     return (
@@ -75,15 +79,32 @@ class PaymentForm extends React.Component {
   }
 }
 
+async function PayOrder(body, setConfirmed, token) {
+  try {
+    await createOrder(body, token);
+    toast('Ingresso reservado com sucesso');
+    setConfirmed(true);
+  } catch (err) {
+    toast('Não foi possível reservar o ingresso');
+    console.log(err);
+  }
+}
+
 export default function CreditCard() {
   const { confirmed, setConfirmed } = useContext(TicketSummaryContext);
+  const token = useToken();
 
   return (
     <Container>
       <CreditCardComponent>
         <PaymentForm />
       </CreditCardComponent>
-      <button className="bookingButton" onClick={() => setConfirmed(true)}>
+      <button
+        className="bookingButton"
+        onClick={() => {
+          PayOrder(confirmed, setConfirmed, token);
+        }}
+      >
         FINALIZAR PAGAMENTO
       </button>
     </Container>
@@ -123,7 +144,7 @@ const CreditCardComponent = styled.div`
 
   input {
     border-radius: 5px;
-    border: solid 1px #C3C3C3;
+    border: solid 1px #c3c3c3;
     margin-bottom: 15px;
     height: 40px;
     font-size: 17px;
@@ -137,7 +158,7 @@ const CreditCardComponent = styled.div`
   p {
     margin-top: -12px;
     margin-bottom: 10px;
-    color: #C3C3C3;
+    color: #c3c3c3;
     font-size: 15px;
   }
 

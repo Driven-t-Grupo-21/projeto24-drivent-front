@@ -11,8 +11,6 @@ import EventInfoContext from '../../contexts/EventInfoContext';
 import TicketSummaryContext from '../../contexts/TicketSummaryContext';
 
 import createEventOrder from '../../hooks/api/useOrder';
-import { toast } from 'react-toastify';
-import { useToken } from '../../hooks/useContext';
 import DashboardLoading from '../DashboardLoading';
 import DashboardWarning from '../DashboardWarning';
 
@@ -24,7 +22,6 @@ const TicketChoise = (props) => {
   const { orderLoading, createOrder } = createEventOrder();
   const { setSummary } = useContext(TicketSummaryContext);
   const { confirmed, setConfirmed } = useContext(TicketSummaryContext);
-  const token = useToken();
 
   async function CreateInfo() {
     const totalValue = Number(cardActive.value) + Number(hostingActive.value ?? 0);
@@ -41,13 +38,6 @@ const TicketChoise = (props) => {
       hosting: hostingActive.type === 'Sem hotel' || hostingActive === '' ? false : true,
       total: Number(totalValue).toFixed(2),
     };
-
-    try {
-      const createOrder2 = await createOrder(body, token);
-      toast('Ingresso reservado com sucesso');
-    } catch (err) {
-      toast('Não foi possível reservar o ingresso');
-    }
   }
 
   if (ticketLoading) {
