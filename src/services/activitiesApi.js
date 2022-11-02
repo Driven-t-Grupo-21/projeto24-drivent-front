@@ -9,8 +9,8 @@ export async function getDates(token) {
   return response.data;
 }
 
-export async function getActivities(token) {
-  const response = await api.get('/activities/date', {
+export async function getActivities(token, date) {
+  const response = await api.get(`/activities/${date}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
