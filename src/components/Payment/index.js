@@ -9,7 +9,7 @@ import CreditCard from './CreditCard';
 import TicketSummaryContext from '../../contexts/TicketSummaryContext';
 
 export default function PaymentChoice() {
-  const { confirmed, setConfirmed } = useContext(TicketSummaryContext);
+  const { summary, confirmed, setConfirmed } = useContext(TicketSummaryContext);
 
   return (
     <Container>
