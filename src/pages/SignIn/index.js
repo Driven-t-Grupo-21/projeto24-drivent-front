@@ -63,14 +63,14 @@ export default function SignIn() {
     const { code } = qs.parseUrl(window.location.href).query;
     if (code) {
       try {
-        const response = await axios.post(`${process.env.BACK_END_URL}/sign-in`, {
+        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/sign-in`, {
           code
         });
         const user = response.data;
-        alert('você está logado, Xablau!');
+        alert('logged with GitHub');
         console.log(user);
       } catch (err) {
-        alert('ops, deu algum Xablivis');
+        alert('GitHub login failed');
         console.log('err', err);
       }
     }
