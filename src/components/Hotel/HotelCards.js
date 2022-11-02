@@ -8,7 +8,6 @@ function HotelCard({ hotel, setRooms }) {
   const { setRoomData, hotelData, setHotelData } = useContext(RoomContext);
   const [roomTypesMessage, setRoomTypesMessage] = useState('');
 
-
   useState(() => {
     if (hotel.hotelRoomsType.includes('Single')) setRoomTypesMessage(roomTypesMessage + 'Single');
     if (hotel.hotelRoomsType.includes('Double')) setRoomTypesMessage(roomTypesMessage + 'Double');
@@ -22,7 +21,6 @@ function HotelCard({ hotel, setRooms }) {
         setRooms(hotel.Rooms);
         setSummary({ hotel: hotel.name, hotelPicture: hotel.logoImageUrl });
         setHotelData(hotel);
-
       }}
       isActive={hotelData.id === hotel.id ? true : false}
     >

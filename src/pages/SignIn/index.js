@@ -2,6 +2,10 @@ import { useState, useContext } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import GithubButton from 'react-github-login-button';
+import axios from 'axios';
+import qs from 'query-string';
+import dotenv from 'dotenv';
+dotenv.config();
 
 import AuthLayout from '../../layouts/Auth';
 
@@ -39,6 +43,39 @@ export default function SignIn() {
     }
   }
 
+  function redirectToGithub() {
+    const GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
+    const params = {
+      response_type: 'code',
+      scope: 'user public_repo',
+      client_id: 'd97594e864f822a80ab2',
+      redirect_uri: 'http://localhost:3000/dashboard/subscription',
+      state: 'drivent'
+    };
+  
+    const queryStrings = qs.stringify(params);
+    const authorizationUrl = `${GITHUB_AUTH_URL}?${queryStrings}`;
+    window.location.href = authorizationUrl;
+  }
+  
+  window.onload = async() => {
+    document.querySelector('.login').addEventListener('click', redirectToGithub);
+    const { code } = qs.parseUrl(window.location.href).query;
+    if (code) {
+      try {
+        const response = await axios.post(`${process.env.BACK_END_URL}/sign-in`, {
+          code
+        });
+        const user = response.data;
+        alert('você está logado, Xablau!');
+        console.log(user);
+      } catch (err) {
+        alert('ops, deu algum Xablivis');
+        console.log('err', err);
+      }
+    }
+  };  
+
   return (
     <AuthLayout background={eventInfo.backgroundImageUrl}>
       <Row>
@@ -62,8 +99,10 @@ export default function SignIn() {
         </form>
       </Row>
       <GithubButton
+        className='login'
         onClick={() => {
           console.log('Github button clicked');
+          redirectToGithub();
         }}
       />
       <Row>
