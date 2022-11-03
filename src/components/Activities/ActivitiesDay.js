@@ -1,57 +1,133 @@
 import styled from 'styled-components';
+import { useState } from 'react';
 import { BiExit, BiXCircle, BiCheckCircle } from 'react-icons/bi';
 
 export default function ActivitiesDays() {
-  return (
-    <Container>
-      <Columns>
-        <h2>Auditório Principal</h2>
-        <Box>
-          <ActivityBox heigth={'80px'} selected={false}>
-            <div>
-              <h3>Minecraft: montando o PC ideal</h3>
-              <h4>09:00 - 10:00</h4>
-            </div>
-            <RightSide soldOut={false}>
-              <BiExit />
-              <h4>20 vagas</h4>
-            </RightSide>
-          </ActivityBox>
-          <ActivityBox heigth={'80px'} selected={true}>
-            <div>
-              <h3>Minecraft: montando o PC ideal</h3>
-              <h4>09:00 - 10:00</h4>
-            </div>
-            <RightSide soldOut={false}>
-              <BiCheckCircle />
-              <h4>Inscrito</h4>
-            </RightSide>
-          </ActivityBox>
-        </Box>
-      </Columns>
+  /* Quando o usuário se inscrever na atividade, o icon e o texto devem mudar
+  <RightSide soldOut={false}>
+    <BiCheckCircle />
+    <h4>Inscrito</h4>
+  </RightSide> */
 
-      <Columns>
-        <h2>Auditório Lateral</h2>
-        <Box className="middle">
-          <ActivityBox heigth={'160px'} selected={false}>
-            <div>
-              <h3>Minecraft: montando o PC ideal</h3>
-              <h4>09:00 - 10:00</h4>
-            </div>
-            <RightSide soldOut={true}>
-              <BiXCircle />
-              <h4>Esgotado</h4>
-            </RightSide>
-          </ActivityBox>
-        </Box>
-      </Columns>
+  let activities = [
+    {
+      localName: 'Auditório Principal',
+      activities: [
+        {
+          id: 1,
+          description: 'Minecraft: montando o PC ideal',
+          startsAt: '09:00',
+          endsAt: '10:00',
+          vacancies: 27,
+        },
+        {
+          id: 2,
+          description: 'LoL: montando o PC ideal',
+          startsAt: '10:00',
+          endsAt: '11:00',
+          vacancies: 0,
+        },
+      ],
+    },
+    {
+      localName: 'Auditório Lateral',
+      activities: [
+        {
+          id: 3,
+          description: 'Palestra X',
+          startsAt: '09:00',
+          endsAt: '11:00',
+          vacancies: 27,
+        },
+      ],
+    },
+    {
+      localName: 'Sala de Workshop',
+      activities: [
+        {
+          id: 4,
+          description: 'Palestra Y',
+          startsAt: '09:00',
+          endsAt: '10:00',
+          vacancies: 0,
+        },
+      ],
+    },
+  ];
 
-      <Columns>
-        <h2>Sala de Workshop</h2>
-        <Box></Box>
-      </Columns>
-    </Container>
-  );
+  function Activity({ id, description, startsAt, endsAt, vacancies }) {
+    const [selected, setSelected] = useState(false);
+
+    return (
+      <ActivityBox heigth={calculateBoxHeigth(startsAt, endsAt)} selected={selected}>
+        <div>
+          <h3>{description}</h3>
+          <h4>
+            {startsAt} - {endsAt}
+          </h4>
+        </div>
+        {vacancies > 0 ? (
+          <RightSide
+            soldOut={false}
+            onClick={() => {
+              setSelected(!selected);
+              console.log(id);
+            }}
+          >
+            <BiExit />
+            <h4>{vacancies} vagas</h4>
+          </RightSide>
+        ) : (
+          <RightSide soldOut={true}>
+            <BiXCircle />
+            <h4>Esgotado</h4>
+          </RightSide>
+        )}
+      </ActivityBox>
+    );
+  }
+
+  function calculateBoxHeigth(startsAt, endsAt) {
+    let startNum = convertToNumber(startsAt);
+    let endNum = convertToNumber(endsAt);
+
+    return `${(endNum - startNum) * 80}px`;
+  }
+
+  function convertToNumber(hour) {
+    let hourArray = hour.split(':');
+    return Number(hourArray[0]);
+  }
+
+  function renderActivities(activitiesList) {
+    return (
+      <>
+        {activitiesList.map((activity, index) => (
+          <Activity
+            key={index}
+            id={activity.id}
+            description={activity.description}
+            startsAt={activity.startsAt}
+            endsAt={activity.endsAt}
+            vacancies={activity.vacancies}
+          />
+        ))}
+      </>
+    );
+  }
+
+  function renderColumns() {
+    return activities.map((item, index) => {
+      return (
+        <Columns key={index}>
+          <h2>{item.localName}</h2>
+          <Box>{renderActivities(item.activities)}</Box>
+        </Columns>
+      );
+    });
+  }
+
+  return <Container>{renderColumns()}</Container>;
 }
 
 const Container = styled.div`
