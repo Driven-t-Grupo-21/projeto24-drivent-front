@@ -1,3 +1,5 @@
+import ActivitiesDays from '../../../components/Activities/ActivitiesDay';
+
 export default function Activities() {
-  return 'Atividades: Em breve!';
+  return <ActivitiesDays />;
 }
