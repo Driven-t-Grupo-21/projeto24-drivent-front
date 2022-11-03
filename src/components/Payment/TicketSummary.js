@@ -15,7 +15,7 @@ export default function TicketSummary() {
           {summary.event} + {accommodation}
         </h2>
       )}
-      <h3>R$ {summary.value}</h3>
+      <h3>R$ {summary.total}</h3>
     </SummaryBox>
   );
 }
