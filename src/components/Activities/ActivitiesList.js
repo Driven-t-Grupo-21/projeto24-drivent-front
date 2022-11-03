@@ -6,13 +6,15 @@ import 'dayjs/locale/pt-br';
 import DashboardLoading from '../DashboardLoading';
 import getActivitiesByDate from '../../hooks/api/useActivitiesDate';
 import { useToken } from '../../hooks/useContext';
+import getUserOrderByEvent from '../../hooks/api/useUserOrder';
+import DashboardWarning from '../DashboardWarning';
 
 function ActivitiesList() {
   const [selectedDate, setSelectedDate] = useState('');
   const { dates, activitiesLoading, getDates } = getActivitiesInfos();
   const token = useToken();
   const { activities, activitiesDateLoading, getActivities } = getActivitiesByDate();
-
+  const { userOrder, orderError, getUserOrder } = getUserOrderByEvent();
   if (activitiesLoading) return <DashboardLoading />;
 
   function RenderDate({ date }) {
