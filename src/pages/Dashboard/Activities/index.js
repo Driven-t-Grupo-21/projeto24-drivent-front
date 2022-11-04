@@ -1,5 +1,13 @@
-import ActivitiesDays from '../../../components/Activities/ActivitiesDay';
+import { useState } from 'react';
+import ActivityPage from '../../../components/Activities';
 
 export default function Activities() {
-  return <ActivitiesDays />;
+  const [progress, setProgress] = useState(1);
+  switch (progress) {
+    case 1:
+      return <ActivityPage setProgress={setProgress} />;
+    default:
+      return <>default</>;
+  }
+  // return 'Atividades: Em breve!';
 }

@@ -2,58 +2,12 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { BiExit, BiXCircle, BiCheckCircle } from 'react-icons/bi';
 
-export default function ActivitiesDays() {
+export default function ActivitiesByDate({ activities }) {
   /* Quando o usuário se inscrever na atividade, o icon e o texto devem mudar
   <RightSide soldOut={false}>
     <BiCheckCircle />
     <h4>Inscrito</h4>
   </RightSide> */
-
-  let activities = [
-    {
-      localName: 'Auditório Principal',
-      activities: [
-        {
-          id: 1,
-          description: 'Minecraft: montando o PC ideal',
-          startsAt: '09:00',
-          endsAt: '10:00',
-          vacancies: 27,
-        },
-        {
-          id: 2,
-          description: 'LoL: montando o PC ideal',
-          startsAt: '10:00',
-          endsAt: '11:00',
-          vacancies: 0,
-        },
-      ],
-    },
-    {
-      localName: 'Auditório Lateral',
-      activities: [
-        {
-          id: 3,
-          description: 'Palestra X',
-          startsAt: '09:00',
-          endsAt: '11:00',
-          vacancies: 27,
-        },
-      ],
-    },
-    {
-      localName: 'Sala de Workshop',
-      activities: [
-        {
-          id: 4,
-          description: 'Palestra Y',
-          startsAt: '09:00',
-          endsAt: '10:00',
-          vacancies: 0,
-        },
-      ],
-    },
-  ];
 
   function Activity({ id, description, startsAt, endsAt, vacancies }) {
     const [selected, setSelected] = useState(false);
@@ -135,6 +89,7 @@ const Container = styled.div`
 `;
 
 const Columns = styled.div`
+  width: 288px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -155,6 +110,12 @@ const Box = styled.div`
   align-items: center;
   padding: 10px;
   border: 1px solid #d7d7d7;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    width: 1px;
+  }
 
   &.middle {
     border-right: 0px;
@@ -170,7 +131,6 @@ const ActivityBox = styled.div`
   padding: 10px 12px;
   display: flex;
   justify-content: space-between;
-  cursor: pointer;
   margin-bottom: 10px;
 
   h3 {
@@ -196,6 +156,7 @@ const RightSide = styled.div`
   justify-content: center;
   align-items: center;
   border-left: 1px solid;
+  cursor: pointer;
 
   svg {
     width: 16px;
