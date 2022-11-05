@@ -17,7 +17,7 @@ export default function PaymentChoice() {
       <h1>Ingresso escolhido</h1>
       <TicketSummary />
       <h1>Pagamento</h1>
-      {!confirmed ? <CreditCard /> : <PaymentConfirmed />}
+      {confirmed ? <CreditCard /> : <PaymentConfirmed />}
     </Container>
   );
 }

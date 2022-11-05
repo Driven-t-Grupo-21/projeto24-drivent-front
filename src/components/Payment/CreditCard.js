@@ -7,6 +7,7 @@ import { createOrder } from '../../services/orderApi';
 import { useToken } from '../../hooks/useContext';
 
 import { toast } from 'react-toastify';
+import dayjs from 'dayjs';
 
 class PaymentForm extends React.Component {
   state = {
@@ -17,6 +18,10 @@ class PaymentForm extends React.Component {
     number: '',
   };
 
+  constructor(props) {
+    super(props);
+  }
+
   handleInputFocus = (e) => {
     this.setState({ focus: e.target.name });
   };
@@ -24,7 +29,15 @@ class PaymentForm extends React.Component {
   handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    this.setState({ [name]: value });
+    if (name === 'expiry') {
+      if (value.length <= 4) {
+        this.setState({ [name]: value });
+        this.props.setCard({ ...this.state, [name]: value });
+      }
+    } else {
+      this.setState({ [name]: value });
+      this.props.setCard({ ...this.state, [name]: value });
+    }
   };
 
   render() {
@@ -79,7 +92,18 @@ class PaymentForm extends React.Component {
   }
 }
 
-async function PayOrder(body, setConfirmed, token) {
+async function PayOrder(body, setConfirmed, token, card) {
+  const now = new Date(Date.now());
+  const month = card.expiry[0] + card.expiry[1];
+  const year = card.expiry[2] + card.expiry[3];
+  if (now.getFullYear() > Number(`20${year}`)) {
+    toast('Esse cartão não é valido');
+    return;
+  }
+  if (now.getFullYear() === Number(`20${year}`) && now.getMonth() + 1 > Number(month)) {
+    toast('Esse cartão não é valido');
+    return;
+  }
   try {
     await createOrder(body, token);
     toast('Ingresso reservado com sucesso');
@@ -92,17 +116,18 @@ async function PayOrder(body, setConfirmed, token) {
 
 export default function CreditCard() {
   const { summary, setConfirmed } = useContext(TicketSummaryContext);
+  const [card, setCard] = useState({});
   const token = useToken();
 
   return (
     <Container>
       <CreditCardComponent>
-        <PaymentForm />
+        <PaymentForm card={card} setCard={setCard} />
       </CreditCardComponent>
       <button
         className="bookingButton"
         onClick={() => {
-          PayOrder(summary, setConfirmed, token);
+          PayOrder(summary, setConfirmed, token, card);
         }}
       >
         FINALIZAR PAGAMENTO
