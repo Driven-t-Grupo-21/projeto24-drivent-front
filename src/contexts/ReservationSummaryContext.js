@@ -8,6 +8,8 @@ export function ReservationSummaryProvider({ children }) {
   const [summary, setSummary] = useState({});
 
   return (
-    <ReservationSummaryContext.Provider value={{ summary, setSummary }}>{children}</ReservationSummaryContext.Provider>
+    <ReservationSummaryContext.Provider value={{ summary, setSummary }}>
+      {children}
+    </ReservationSummaryContext.Provider>
   );
 }

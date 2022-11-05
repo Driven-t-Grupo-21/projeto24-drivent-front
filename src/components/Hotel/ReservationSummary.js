@@ -3,7 +3,7 @@ import { useContext } from 'react';
 
 import ReservationSummaryContext from '../../contexts/ReservationSummaryContext';
 
-export default function ReservationSummary({ setProgress }) {
+export default function ReservationSummary({ setProgress, setIsChangeRoom }) {
   const { summary: reservation } = useContext(ReservationSummaryContext);
 
   function roomTypeName() {
@@ -31,6 +31,7 @@ export default function ReservationSummary({ setProgress }) {
   }
 
   async function changeRoom() {
+    setIsChangeRoom(true);
     setProgress(1);
   }
 

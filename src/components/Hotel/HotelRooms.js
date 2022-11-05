@@ -4,6 +4,8 @@ import { BsPerson, BsFillPersonFill } from 'react-icons/bs';
 
 import { toast } from 'react-toastify';
 
+import { useNavigate } from 'react-router-dom';
+
 import DashboardSubtitle from '../DashboardSubtitle';
 import RoomContext from '../../contexts/RoomContext';
 
@@ -12,13 +14,14 @@ import { useEventInfo, useToken } from '../../hooks/useContext';
 import createReserveRoom from '../../hooks/api/useRoom';
 import ReservationSummaryContext from '../../contexts/ReservationSummaryContext';
 
-function HotelRooms({ rooms, setProgress }) {
+function HotelRooms({ rooms, setProgress, setIsChangeRoom }) {
   const allRooms = rooms;
 
   const { roomLoading, reserveRoom } = createReserveRoom();
 
   const { id } = useEventInfo();
   const token = useToken();
+  const navigate = useNavigate();
 
   const { roomData, setRoomData } = useContext(RoomContext);
   const { summary, setSummary } = useContext(ReservationSummaryContext);
@@ -27,7 +30,7 @@ function HotelRooms({ rooms, setProgress }) {
     return (
       <RoomsBox>
         {allRooms.map((room, index) => {
-          return <PutRoom room={room} key={index}/>;
+          return <PutRoom room={room} key={index} />;
         })}
       </RoomsBox>
     );
@@ -72,8 +75,11 @@ function HotelRooms({ rooms, setProgress }) {
     try {
       await reserveRoom(token, id, roomData);
       toast('Quarto reservado com sucesso');
+      setIsChangeRoom(false);
       setProgress(2);
+      navigate('/dashboard/activities');
     } catch (err) {
+      console.log(err);
       toast('Não foi possível reservar o quarto');
     }
   }

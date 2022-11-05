@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DateFnsUtils from '@date-io/date-fns';
 import Typography from '@material-ui/core/Typography';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
 import CustomParseFormat from 'dayjs/plugin/customParseFormat';
@@ -30,16 +31,16 @@ export default function PersonalInformationForm() {
   const { getCep } = useCep();
   const { enrollment } = useEnrollment();
   const { saveEnrollmentLoading, saveEnrollment } = useSaveEnrollment();
-
+  const navigate = useNavigate();
   const { handleSubmit, handleChange, data, errors, setData, customHandleChange } = useForm({
     validations: FormValidations,
 
-    onSubmit: async( data ) => {
+    onSubmit: async(data) => {
       const now = new Date(Date.now());
-      const birthDate = Date.parse( dayjs( data.birthday ) );
-      const validateYear = Date.parse(`${now.getMonth()} ${now.getDay()},${now.getFullYear()-18}`);
+      const birthDate = Date.parse(dayjs(data.birthday));
+      const validateYear = Date.parse(`${now.getMonth()} ${now.getDay()},${now.getFullYear() - 18}`);
 
-      if (!data.birthday || validateYear<birthDate) {
+      if (!data.birthday || validateYear < birthDate) {
         toast('Usuário deve ter mais de 18 anos!');
         return;
       }
@@ -62,6 +63,7 @@ export default function PersonalInformationForm() {
       try {
         await saveEnrollment(newData);
         toast('Informações salvas com sucesso!');
+        setTimeout(() => navigate('/dashboard/payment'), 1000);
       } catch (err) {
         toast('Não foi possível salvar suas informações!');
       }

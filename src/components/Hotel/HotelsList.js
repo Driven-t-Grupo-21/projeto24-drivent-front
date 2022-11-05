@@ -4,21 +4,21 @@ import DashboardWarning from '../DashboardWarning';
 import HotelCard from './HotelCards';
 import HotelRooms from './HotelRooms';
 
-function HotelsList({ hotels, setProgress }) {
+function HotelsList({ hotels, setProgress, setIsChangeRoom }) {
   const [rooms, setRooms] = React.useState();
 
   return (
     <>
       <Container>
-        {hotels.hotelsAvailable.map((hotel) => {
+        {hotels.hotelsAvailable.map((hotel, index) => {
           return (
-            <>
+            <div key={index}>
               <HotelCard hotel={hotel} setRooms={setRooms} />
-            </>
+            </div>
           );
         })}
       </Container>
-      {rooms ? <HotelRooms rooms={rooms} setProgress={setProgress} /> : null}
+      {rooms ? <HotelRooms rooms={rooms} setProgress={setProgress} setIsChangeRoom={setIsChangeRoom}/> : null}
     </>
   );
 }

@@ -54,7 +54,8 @@ export default function SignIn() {
     };
   
     const queryStrings = qs.stringify(params);
-    const authorizationUrl = `${GITHUB_AUTH_URL}?${queryStrings}`;
+    console.log(queryStrings);
+    const authorizationUrl =`${GITHUB_AUTH_URL}?${queryStrings}`;
     window.location.href = authorizationUrl;
   }
   

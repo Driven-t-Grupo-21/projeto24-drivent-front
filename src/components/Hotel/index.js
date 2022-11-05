@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react';
+import ReservationSummaryContext from '../../contexts/ReservationSummaryContext';
 import RoomContext from '../../contexts/RoomContext';
 
 import getEventHotelsInfo from '../../hooks/api/useHotel';
@@ -8,8 +9,9 @@ import DashboardTitle from '../DashboardTitle';
 import DashboardWarning from '../DashboardWarning';
 import HotelsList from './HotelsList';
 
-function HotelPage({ setProgress }) {
+function HotelPage({ setProgress, isChangeRoom, setIsChangeRoom }) {
   const { setHotelData } = useContext(RoomContext);
+  const { setSummary } = useContext(ReservationSummaryContext);
   const { hotel, hotelLoading, hotelError } = getEventHotelsInfo();
 
   useEffect(() => {
@@ -37,11 +39,22 @@ function HotelPage({ setProgress }) {
 
   if (hotel.hotelsAvailable.length === 0) return <DashboardWarning>This event has no hotels</DashboardWarning>;
 
+  if (hotel.isAlreadyBooked !== false && !isChangeRoom) {
+    const choosenHotel = hotel.isAlreadyBooked.hotel;
+    setSummary({
+      hotel: choosenHotel.name,
+      hotelPicture: choosenHotel.logoImageUrl,
+      roomNumber: choosenHotel.id,
+      roomType: hotel.isAlreadyBooked.Rooms.beds,
+    });
+    setProgress(2);
+  }
+
   return (
     <>
       <DashboardTitle>Escolha de hotel e quarto</DashboardTitle>
       <DashboardSubtitle>Primeiro escolha seu hotel</DashboardSubtitle>
-      <HotelsList hotels={hotel} setProgress={setProgress} />
+      <HotelsList hotels={hotel} setProgress={setProgress} setIsChangeRoom={setIsChangeRoom}/>
     </>
   );
 }

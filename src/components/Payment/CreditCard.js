@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import TicketSummaryContext from '../../contexts/TicketSummaryContext';
@@ -9,6 +10,7 @@ import { useToken } from '../../hooks/useContext';
 import { toast } from 'react-toastify';
 
 class PaymentForm extends React.Component {
+  navigate = useNavigate();
   state = {
     cvc: '',
     expiry: '',
@@ -84,6 +86,7 @@ async function PayOrder(body, setConfirmed, token) {
     await createOrder(body, token);
     toast('Ingresso reservado com sucesso');
     setConfirmed(true);
+    setTimeout(() => navigate('/dashboard/hotel'), 1000);
   } catch (err) {
     toast('Não foi possível reservar o ingresso');
     console.log(err);
