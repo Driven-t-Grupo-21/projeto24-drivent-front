@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import GithubButton from 'react-github-login-button';
@@ -19,6 +19,8 @@ import UserContext from '../../contexts/UserContext';
 
 import useSignIn from '../../hooks/api/useSignIn';
 
+let tokenGlobal = 0;
+
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,12 +32,19 @@ export default function SignIn() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (tokenGlobal != 0) {
+      setUserData(localStorage.getItem('token'));
+    }
+  });
+
   async function submit(event) {
     event.preventDefault();
 
     try {
       const userData = await signIn(email, password);
       setUserData(userData);
+      localStorage.setItem('token', userData.token);
       toast('Login realizado com sucesso!');
       navigate('/dashboard');
     } catch (err) {
@@ -52,29 +61,11 @@ export default function SignIn() {
       redirect_uri: 'http://localhost:3000/dashboard/subscription',
       state: 'drivent'
     };
-  
+
     const queryStrings = qs.stringify(params);
     const authorizationUrl = `${GITHUB_AUTH_URL}?${queryStrings}`;
     window.location.href = authorizationUrl;
   }
-  
-  window.onload = async() => {
-    document.querySelector('.login').addEventListener('click', redirectToGithub);
-    const { code } = qs.parseUrl(window.location.href).query;
-    if (code) {
-      try {
-        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/sign-in`, {
-          code
-        });
-        const user = response.data;
-        alert('logged with GitHub');
-        console.log(user);
-      } catch (err) {
-        alert('GitHub login failed');
-        console.log('err', err);
-      }
-    }
-  };  
 
   return (
     <AuthLayout background={eventInfo.backgroundImageUrl}>
@@ -99,9 +90,7 @@ export default function SignIn() {
         </form>
       </Row>
       <GithubButton
-        className='login'
         onClick={() => {
-          console.log('Github button clicked');
           redirectToGithub();
         }}
       />
@@ -111,3 +100,29 @@ export default function SignIn() {
     </AuthLayout>
   );
 }
+
+window.onload = async() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get('code');
+
+  if (code) {
+    try {
+      const response = await axios.post('http://localhost:4000/auth/sign-in/github', {
+        code
+      });
+      const token = response.data;
+      alert('logged in with GitHub');
+      localStorage.setItem('token', token.token);
+      tokenGlobal = 1;
+      window.location.replace('http://localhost:3000/dashboard/subscription');
+    } catch (err) {
+      alert('GitHub login failed');
+      console.log('err', err);
+    }
+  }
+};
+
+/*preciso setUserData(token), mas não consigo nessa última função. via alternativa - 
+  fazer todos os requests autenticados pegarem o token do local storage ao invés do
+  userData context. ou simplesmente conseguir setUserData(token) nessa última função,
+  aí todo mundo pega do context pra autenticar e boas. */
