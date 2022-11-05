@@ -103,7 +103,7 @@ const Columns = styled.div`
 `;
 
 const Box = styled.div`
-  width: 288px;
+  width: 290px;
   height: 390px;
   display: flex;
   flex-direction: column;
@@ -111,10 +111,22 @@ const Box = styled.div`
   padding: 10px;
   border: 1px solid #d7d7d7;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
 
   ::-webkit-scrollbar {
-    width: 1px;
+    width: 14px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border: 3px solid white;
+    background-color: #f1f1f1;
+    background-clip: padding-box;
+    border-radius: 10px;
+    :hover {
+      background-color: #bfbfbf;
+    }
+  }
+  ::-webkit-scrollbar-track {
+    background-color: white;
   }
 
   &.middle {
@@ -132,6 +144,7 @@ const ActivityBox = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  flex-shrink: 0;
 
   h3 {
     font-size: 12px;
