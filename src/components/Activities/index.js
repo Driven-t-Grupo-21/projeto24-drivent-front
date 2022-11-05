@@ -1,29 +1,33 @@
 import React from 'react';
+import getUserOrderByEvent from '../../hooks/api/useUserOrder';
+import DashboardLoading from '../DashboardLoading';
 import DashboardSubtitle from '../DashboardSubtitle';
 import DashboardTitle from '../DashboardTitle';
+import DashboardWarning from '../DashboardWarning';
 import ActivitiesList from './ActivitiesList';
 
-function ActivityPage({ setProgress }) {
-  //   if (hotelLoading) return <DashboardLoading />;
+function ActivityPage() {
+  const { userOrder, orderLoading, getUserOrder } = getUserOrderByEvent();
 
-  //   if (hotelError)
-  //     return (
-  //       <DashboardWarning title="Escolha de hotel e quarto">
-  //         {hotelError === 'Order not completed' ? (
-  //           <>
-  //             Você precisa ter confirmado pagamento antes <br />
-  //             de fazer a escolha de hospedagem
-  //           </>
-  //         ) : (
-  //           <>
-  //             Sua modalidade de ingresso não inclui hospedagem <br />
-  //             Prossiga para a escolha de atividades
-  //           </>
-  //         )}
-  //       </DashboardWarning>
-  //     );
+  if (orderLoading) return <DashboardLoading />;
 
-  //   if (hotel.hotelsAvailable.length === 0) return <DashboardWarning>This event has no hotels</DashboardWarning>;
+  if (userOrder) {
+    if (userOrder.Ticket.type === 'Online') {
+      return (
+        <DashboardWarning title="Escolha de hotel e quarto">
+          Sua modalidade de ingresso não inclui hospedagem <br />
+          Prossiga para a escolha de atividades
+        </DashboardWarning>
+      );
+    }
+  } else {
+    return (
+      <DashboardWarning title="Escolha de hotel e quarto">
+        Você precisa ter confirmado pagamento antes <br />
+        de fazer a escolha de hospedagem
+      </DashboardWarning>
+    );
+  }
 
   return (
     <>
