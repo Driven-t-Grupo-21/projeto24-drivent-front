@@ -7,13 +7,17 @@ import DashboardLoading from '../DashboardLoading';
 import getActivitiesByDate from '../../hooks/api/useActivitiesDate';
 import { useToken } from '../../hooks/useContext';
 import ActivitiesByDate from './ActivitiesByDate';
+import getUserOrderByEvent from '../../hooks/api/useUserOrder';
+import DashboardWarning from '../DashboardWarning';
+
 
 function ActivitiesList() {
   const [selectedDate, setSelectedDate] = useState('');
   const { dates, activitiesLoading, getDates } = getActivitiesInfos();
   const token = useToken();
-  const { activitiesDateLoading, getActivities } = getActivitiesByDate();
   const [activities, setActivities] = useState([]);
+  const { activities, activitiesDateLoading, getActivities } = getActivitiesByDate();
+  const { userOrder, orderError, getUserOrder } = getUserOrderByEvent();
 
   if (activitiesLoading) return <DashboardLoading />;
 
