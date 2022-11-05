@@ -52,29 +52,30 @@ export default function SignIn() {
       redirect_uri: 'http://localhost:3000/dashboard/subscription',
       state: 'drivent'
     };
-  
+
     const queryStrings = qs.stringify(params);
     const authorizationUrl = `${GITHUB_AUTH_URL}?${queryStrings}`;
     window.location.href = authorizationUrl;
   }
-  
+
   window.onload = async() => {
-    document.querySelector('.login').addEventListener('click', redirectToGithub);
     const { code } = qs.parseUrl(window.location.href).query;
     if (code) {
       try {
-        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/sign-in`, {
+        const response = await axios.post(`${process.env.BACK_END_URL}/sign-in`, {
           code
         });
         const user = response.data;
-        alert('logged with GitHub');
+        alert('você está logado, Xablau!');
         console.log(user);
+        setUserData(user);
+        localStorage.setItem('token', response.data.token);
       } catch (err) {
-        alert('GitHub login failed');
+        alert('ops, deu algum Xablivis');
         console.log('err', err);
       }
     }
-  };  
+  };
 
   return (
     <AuthLayout background={eventInfo.backgroundImageUrl}>
@@ -99,9 +100,7 @@ export default function SignIn() {
         </form>
       </Row>
       <GithubButton
-        className='login'
         onClick={() => {
-          console.log('Github button clicked');
           redirectToGithub();
         }}
       />
