@@ -4,3 +4,4 @@ COPY ./package*.json ./
 COPY ./.husky ./
 RUN npm install --legacy-peer-deps
 COPY . .
+

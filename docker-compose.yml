@@ -11,7 +11,7 @@ services:
         max-size: "10m"
         max-file: "5"
     working_dir: /usr/src/drivent
-    command: npm run build
+    command: yarn run build
     environment:
       NODE_ENV: production
       REACT_APP_API_BASE_URL: ${REACT_APP_API_BASE_URL}
