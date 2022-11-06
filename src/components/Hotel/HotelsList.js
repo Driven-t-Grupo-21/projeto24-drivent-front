@@ -26,11 +26,13 @@ function HotelsList({ hotels, setProgress, setIsChangeRoom }) {
 export default HotelsList;
 
 const Container = styled.ul`
+  max-width: 90%;
   display: flex;
   gap: 20px;
   overflow-x: auto;
   margin-top: 20px;
   margin-bottom: 30px;
+  flex-shrink: 0;
 
   ::-webkit-scrollbar {
     height: 4px;

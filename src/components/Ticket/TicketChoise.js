@@ -42,7 +42,7 @@ const TicketChoise = (props) => {
       hosting: hostingActive.type === 'Sem hotel' || hostingActive === '' ? false : true,
       total: String(totalValue.toFixed(2)),
     });
-    props.setProgress( 2 );
+    props.setProgress(2);
   }
 
   if (ticketLoading) {
@@ -107,6 +107,8 @@ const Container = styled.div`
     display: flex;
     gap: 25px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+    width: fit-content;
   }
 
   .bookingButton {

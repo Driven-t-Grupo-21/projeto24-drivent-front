@@ -54,7 +54,7 @@ function HotelPage({ setProgress, isChangeRoom, setIsChangeRoom }) {
     <>
       <DashboardTitle>Escolha de hotel e quarto</DashboardTitle>
       <DashboardSubtitle>Primeiro escolha seu hotel</DashboardSubtitle>
-      <HotelsList hotels={hotel} setProgress={setProgress} setIsChangeRoom={setIsChangeRoom}/>
+      <HotelsList hotels={hotel} setProgress={setProgress} setIsChangeRoom={setIsChangeRoom} />
     </>
   );
 }

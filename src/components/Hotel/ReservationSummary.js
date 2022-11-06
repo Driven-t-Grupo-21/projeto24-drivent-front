@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useContext } from 'react';
 
 import ReservationSummaryContext from '../../contexts/ReservationSummaryContext';
+import DashboardTitle from '../DashboardTitle';
 
 export default function ReservationSummary({ setProgress, setIsChangeRoom }) {
   const { summary: reservation } = useContext(ReservationSummaryContext);
@@ -37,6 +38,7 @@ export default function ReservationSummary({ setProgress, setIsChangeRoom }) {
 
   return (
     <Reservation>
+      <DashboardTitle>Escolha de hotel e quarto</DashboardTitle>
       <h2>Você já escolheu seu quarto:</h2>
       <SummaryBox>
         <img src={reservation.hotelPicture} alt="" />

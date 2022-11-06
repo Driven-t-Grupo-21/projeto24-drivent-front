@@ -9,7 +9,7 @@ import CreditCard from './CreditCard';
 import TicketSummaryContext from '../../contexts/TicketSummaryContext';
 
 export default function PaymentChoice() {
-  const { summary, confirmed, setConfirmed } = useContext(TicketSummaryContext);
+  const { summary, confirmed } = useContext(TicketSummaryContext);
 
   return (
     <Container>
@@ -27,5 +27,11 @@ const Container = styled.div`
     font-size: 20px;
     color: #8e8e8e;
     margin-bottom: 20px;
+  }
+
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 `;

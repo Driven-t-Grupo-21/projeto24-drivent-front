@@ -11,12 +11,12 @@ export function PutHotelCards({ hostingActive, setHostingActive }) {
       <h6>Ótimo! Agora escolha sua modalidade de hospedagem</h6>
       <section className="cardsSection">
         {hostingTypes.map((item, index) => (
-          <>
-            <HostCards isActive={false} key={index} hostingActive={hostingActive} setHostingActive={setHostingActive}>
+          <div key={index}>
+            <HostCards isActive={false} hostingActive={hostingActive} setHostingActive={setHostingActive}>
               <p>{item.type}</p>
               <p className="price">+ R$ {item.price}</p>
             </HostCards>
-          </>
+          </div>
         ))}
       </section>
     </>

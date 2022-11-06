@@ -1,23 +1,17 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import getActivitiesInfos from '../../hooks/api/useActivities';
+import getActivitiesByDate from '../../hooks/api/useActivitiesDate';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import DashboardLoading from '../DashboardLoading';
-import getActivitiesByDate from '../../hooks/api/useActivitiesDate';
 import { useToken } from '../../hooks/useContext';
 import ActivitiesByDate from './ActivitiesByDate';
-import getUserOrderByEvent from '../../hooks/api/useUserOrder';
-import DashboardWarning from '../DashboardWarning';
 
-
-function ActivitiesList() {
+function ActivitiesList({ dates, activitiesLoading, getDates }) {
   const [selectedDate, setSelectedDate] = useState('');
-  const { dates, activitiesLoading, getDates } = getActivitiesInfos();
+  const { activities, activitiesDateError, activitiesDateLoading, getActivities } = getActivitiesByDate();
   const token = useToken();
-  const [activities, setActivities] = useState([]);
-  const { activities, activitiesDateLoading, getActivities } = getActivitiesByDate();
-  const { userOrder, orderError, getUserOrder } = getUserOrderByEvent();
+  const [activitiesInfo, setActivitiesInfo] = useState([]);
 
   if (activitiesLoading) return <DashboardLoading />;
 
@@ -32,11 +26,10 @@ function ActivitiesList() {
   }
 
   async function RenderActivities(date) {
-    console.log(date);
     setSelectedDate(date);
     const activitiesByDate = await getActivities(token, date.activityDate);
     // # Utilizar a variavel activities para renderizar as atividades em cada local
-    setActivities(activitiesByDate);
+    setActivitiesInfo(activitiesByDate);
   }
   return (
     <>
@@ -56,7 +49,6 @@ export default ActivitiesList;
 const Container = styled.ul`
   display: flex;
   gap: 20px;
-  overflow-x: auto;
   margin-top: 20px;
   margin-bottom: 60px;
 `;

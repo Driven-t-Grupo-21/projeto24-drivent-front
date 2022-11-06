@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import ButtonBox from './ButtonBox';
 import Typography from '@material-ui/core/Typography';
-
 export default function TicketTypes() {
+
   return (
     <>
       <StyledTypography variant="h4">Suas Informações</StyledTypography>

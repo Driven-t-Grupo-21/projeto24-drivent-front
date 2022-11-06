@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { BiExit, BiXCircle, BiCheckCircle } from 'react-icons/bi';
+import { toast } from 'react-toastify';
+
+import activitiesHook from '../../hooks/api/useActivities';
+import { bookActivitiesPost } from '../../services/activitiesApi';
+import { useToken } from '../../hooks/useContext';
 
 export default function ActivitiesByDate({ activities }) {
   /* Quando o usuário se inscrever na atividade, o icon e o texto devem mudar
@@ -10,7 +15,25 @@ export default function ActivitiesByDate({ activities }) {
   </RightSide> */
 
   function Activity({ id, description, startsAt, endsAt, vacancies }) {
-    const [selected, setSelected] = useState(false);
+    const [selected, setSelected] = useState(activities.userActivities.includes(`${id}`) ? true : false);
+    const token = useToken();
+
+    async function postBookActivity() {
+      setSelected(true);
+
+      try {
+        await bookActivitiesPost(token, id);
+      } catch (e) {
+        if (e.response?.data.message) {
+          toast(e.response?.data.message);
+        } else {
+          toast('Não foi possivel confirmar a inscrição nesse evento');
+        }
+
+        setSelected(false);
+        console.log(e);
+      }
+    }
 
     return (
       <ActivityBox heigth={calculateBoxHeigth(startsAt, endsAt)} selected={selected}>
@@ -21,16 +44,22 @@ export default function ActivitiesByDate({ activities }) {
           </h4>
         </div>
         {vacancies > 0 ? (
-          <RightSide
-            soldOut={false}
-            onClick={() => {
-              setSelected(!selected);
-              console.log(id);
-            }}
-          >
-            <BiExit />
-            <h4>{vacancies} vagas</h4>
-          </RightSide>
+          !selected ? (
+            <RightSide
+              soldOut={false}
+              onClick={() => {
+                postBookActivity(id);
+              }}
+            >
+              <BiExit />
+              <h4>{vacancies} vagas</h4>
+            </RightSide>
+          ) : (
+            <RightSide soldOut={false} style={{ cursor: 'default' }}>
+              <BiCheckCircle />
+              <h4>Inscrito</h4>
+            </RightSide>
+          )
         ) : (
           <RightSide soldOut={true}>
             <BiXCircle />
@@ -71,7 +100,7 @@ export default function ActivitiesByDate({ activities }) {
   }
 
   function renderColumns() {
-    return activities.map((item, index) => {
+    return activities.allActivities.map((item, index) => {
       return (
         <Columns key={index}>
           <h2>{item.localName}</h2>
@@ -86,6 +115,12 @@ export default function ActivitiesByDate({ activities }) {
 
 const Container = styled.div`
   display: flex;
+
+  @media (max-width: 600px) {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
 `;
 
 const Columns = styled.div`
@@ -156,7 +191,7 @@ const RightSide = styled.div`
   justify-content: center;
   align-items: center;
   border-left: 1px solid;
-  cursor: pointer;
+  cursor: ${(props) => (props.soldOut ? 'default' : 'pointer')};
 
   svg {
     width: 16px;

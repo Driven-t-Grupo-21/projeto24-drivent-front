@@ -7,7 +7,6 @@ export default function useAsync(handler, immediate = true) {
 
   const act = async(...args) => {
     setLoading(true);
-    setError(null);
 
     try {
       const data = await handler(...args);
@@ -15,7 +14,7 @@ export default function useAsync(handler, immediate = true) {
       setLoading(false);
       return data;
     } catch (e) {
-      console.log(e);
+      console.log(e.response?.data.message);
       setError(e.response?.data.message);
       setLoading(false);
       throw e;

@@ -109,7 +109,13 @@ export default HotelRooms;
 const RoomsBox = styled.div`
   display: flex;
   flex-wrap: wrap;
+  max-height: 30%;
   margin-top: 20px;
+  
+  @media(max-width: 600px) {
+    justify-content: center;
+    min-height: 100%;
+  }
 `;
 
 const Button = styled.button`
@@ -123,6 +129,11 @@ const Button = styled.button`
   font-size: 14px;
 
   cursor: pointer;
+
+  @media(max-width: 600px) {
+    margin: 0 auto;
+    flex-shrink: 0;
+  }
 `;
 
 const Icons = styled.div`
