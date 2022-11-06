@@ -44,7 +44,7 @@ function HotelPage({ setProgress, isChangeRoom, setIsChangeRoom }) {
     setSummary({
       hotel: choosenHotel.name,
       hotelPicture: choosenHotel.logoImageUrl,
-      roomNumber: choosenHotel.id,
+      roomNumber: hotel.isAlreadyBooked.Rooms.number,
       roomType: hotel.isAlreadyBooked.Rooms.beds,
     });
     setProgress(2);

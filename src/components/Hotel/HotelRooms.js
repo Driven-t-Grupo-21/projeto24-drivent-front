@@ -111,8 +111,8 @@ const RoomsBox = styled.div`
   flex-wrap: wrap;
   max-height: 30%;
   margin-top: 20px;
-  
-  @media(max-width: 600px) {
+
+  @media (max-width: 600px) {
     justify-content: center;
     min-height: 100%;
   }
@@ -130,7 +130,7 @@ const Button = styled.button`
 
   cursor: pointer;
 
-  @media(max-width: 600px) {
+  @media (max-width: 600px) {
     margin: 0 auto;
     flex-shrink: 0;
   }
