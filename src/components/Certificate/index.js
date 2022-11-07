@@ -6,25 +6,26 @@ import CertificateList from './CertificateList';
 // import DashboardWarning from '../DashboardWarning';
 
 function CertificatePage() {
-  //   if (orderLoading) return <DashboardLoading />;
+  const { userOrder, orderLoading, getUserOrder } = getUserOrderByEvent();
+  if (orderLoading) return <DashboardLoading />;
 
-  //   if (userOrder) {
-  //     if (userOrder.Ticket.type === 'Online') {
-  //       return (
-  //         <DashboardWarning title="Escolha de hotel e quarto">
-  //           Sua modalidade de ingresso não inclui hospedagem <br />
-  //           Prossiga para a escolha de atividades
-  //         </DashboardWarning>
-  //       );
-  //     }
-  //   } else {
-  //     return (
-  //       <DashboardWarning title="Escolha de hotel e quarto">
-  //         Você precisa ter confirmado pagamento antes <br />
-  //         de fazer a escolha de hospedagem
-  //       </DashboardWarning>
-  //     );
-  //   }
+  if (userOrder) {
+    if (userOrder.Ticket.type === 'Online') {
+      return (
+        <DashboardWarning title="Escolha de hotel e quarto">
+          Sua modalidade de ingresso não inclui hospedagem <br />
+          Prossiga para a escolha de atividades
+        </DashboardWarning>
+      );
+    }
+  } else {
+    return (
+      <DashboardWarning title="Escolha de hotel e quarto">
+        Você precisa ter confirmado pagamento antes <br />
+        de fazer a escolha de hospedagem
+      </DashboardWarning>
+    );
+  }
 
   return (
     <>
