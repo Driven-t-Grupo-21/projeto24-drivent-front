@@ -33,8 +33,9 @@ export default function SignIn() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (tokenGlobal != 0) {
-      setUserData(localStorage.getItem('token'));
+    if (tokenGlobal !== 0) {
+      setUserData(localStorage.getItem('userData'));
+      navigate('/dashboard');
     }
   });
 
@@ -44,7 +45,6 @@ export default function SignIn() {
     try {
       const userData = await signIn(email, password);
       setUserData(userData);
-      localStorage.setItem('token', userData.token);
       toast('Login realizado com sucesso!');
       navigate('/dashboard');
     } catch (err) {
@@ -111,9 +111,12 @@ window.onload = async() => {
       const response = await axios.post('http://localhost:4000/auth/sign-in/github', {
         code
       });
-      const token = response.data;
+      const token = response.data.token;
       alert('logged in with GitHub');
-      localStorage.setItem('token', token.token);
+      let tokenObject = {
+        token
+      };
+      localStorage.setItem('userData', JSON.stringify(tokenObject));
       tokenGlobal = 1;
       window.location.replace('http://localhost:3000/dashboard/subscription');
     } catch (err) {
@@ -122,8 +125,3 @@ window.onload = async() => {
     }
   }
 };
-
-/*preciso setUserData(token), mas não consigo nessa última função. via alternativa - 
-  fazer todos os requests autenticados pegarem o token do local storage ao invés do
-  userData context. ou simplesmente conseguir setUserData(token) nessa última função,
-  aí todo mundo pega do context pra autenticar e boas. */

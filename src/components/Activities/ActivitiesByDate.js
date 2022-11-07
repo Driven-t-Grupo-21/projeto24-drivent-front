@@ -8,6 +8,7 @@ import { bookActivitiesPost } from '../../services/activitiesApi';
 import { useToken } from '../../hooks/useContext';
 
 export default function ActivitiesByDate({ activities }) {
+  console.log(activities);
   /* Quando o usuário se inscrever na atividade, o icon e o texto devem mudar
   <RightSide soldOut={false}>
     <BiCheckCircle />

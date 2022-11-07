@@ -1,5 +1,3 @@
-
-
 on:
   push:
     branches:
@@ -11,7 +9,7 @@ env:
   REACT_APP_API_BASE_URL: /api
 jobs:
   build:
-    runs-on: [self-hosted, drivent]
+    runs-on: drivent
     timeout-minutes: 20
     steps:
       - name: Checkout
