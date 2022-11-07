@@ -9,5 +9,4 @@ export default function Activities() {
   default:
     return <>default</>;
   }
-  // return 'Atividades: Em breve!';
 }

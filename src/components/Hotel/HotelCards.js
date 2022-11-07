@@ -9,9 +9,22 @@ function HotelCard({ hotel, setRooms }) {
   const [roomTypesMessage, setRoomTypesMessage] = useState('');
 
   useState(() => {
-    if (hotel.hotelRoomsType.includes('Single')) setRoomTypesMessage(roomTypesMessage + 'Single');
-    if (hotel.hotelRoomsType.includes('Double')) setRoomTypesMessage(roomTypesMessage + 'Double');
-    if (hotel.hotelRoomsType.includes('Triple')) setRoomTypesMessage(roomTypesMessage + 'Triple');
+    let message = '';
+    if (hotel.hotelRoomsType.includes('Single') && hotel.hotelRoomsType.length === 3) {
+      message += 'Single, ';
+    } else if (hotel.hotelRoomsType.includes('Single') && hotel.hotelRoomsType.length === 2) {
+      message += 'Single e ';
+    } else message += 'Single';
+
+    if (hotel.hotelRoomsType.includes('Double') && hotel.hotelRoomsType.length === 3) {
+      message += 'Double e ';
+    } else message += 'Double';
+
+    if (hotel.hotelRoomsType.includes('Triple')) {
+      message += 'Triple';
+    }
+
+    setRoomTypesMessage(message);
   }, []);
 
   return (

@@ -26,7 +26,7 @@ const ConfirmedBox = styled.div`
 `;
 
 const Text = styled.div`
-  width: 405px;
+/*   width: 405px; */
   font-size: 16px;
   line-height: 18.75px;
   color: #454545;

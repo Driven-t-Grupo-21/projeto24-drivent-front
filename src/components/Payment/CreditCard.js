@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import TicketSummaryContext from '../../contexts/TicketSummaryContext';
@@ -7,9 +8,9 @@ import { createOrder } from '../../services/orderApi';
 import { useToken } from '../../hooks/useContext';
 
 import { toast } from 'react-toastify';
-import dayjs from 'dayjs';
 
 class PaymentForm extends React.Component {
+  static contextType = TicketSummaryContext;
   state = {
     cvc: '',
     expiry: '',
@@ -29,18 +30,25 @@ class PaymentForm extends React.Component {
   handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === 'expiry') {
-      if (value.length <= 4) {
-        this.setState({ [name]: value });
-        this.props.setCard({ ...this.state, [name]: value });
-      }
-    } else {
-      this.setState({ [name]: value });
-      this.props.setCard({ ...this.state, [name]: value });
+    this.setState({ [name]: value });
+  };
+
+  payOrder = async(e, body, setConfirmed, token) => {
+    e.preventDefault();
+    try {
+      await createOrder(body, token);
+      toast('Ingresso reservado com sucesso');
+      setConfirmed(true);
+      setTimeout(() => this.props.navigate('/dashboard/hotel'), 1000);
+    } catch (err) {
+      toast('Não foi possível reservar o ingresso');
+      console.log(err);
     }
   };
 
   render() {
+    const { summary, setConfirmed } = this.context;
+
     return (
       <div id="PaymentForm" className="component">
         <Cards
@@ -50,10 +58,12 @@ class PaymentForm extends React.Component {
           name={this.state.name}
           number={this.state.number}
         />
-        <form>
+        <form id="card-form" onSubmit={(e) => this.payOrder(e, summary, setConfirmed, this.props.token)}>
           <input
             type="tel"
             name="number"
+            pattern="[\d| ]{16,22}"
+            required
             placeholder="Card Number"
             className="big"
             onChange={this.handleInputChange}
@@ -65,6 +75,7 @@ class PaymentForm extends React.Component {
             name="name"
             placeholder="Name"
             className="big"
+            required
             onChange={this.handleInputChange}
             onFocus={this.handleInputFocus}
           />
@@ -73,6 +84,8 @@ class PaymentForm extends React.Component {
               type="tel"
               name="expiry"
               placeholder="Valid Thru"
+              pattern="\d\d/?\d\d"
+              required
               className="small"
               onChange={this.handleInputChange}
               onFocus={this.handleInputFocus}
@@ -81,6 +94,8 @@ class PaymentForm extends React.Component {
               type="tel"
               name="cvc"
               placeholder="CVC"
+              pattern="\d{3,4}"
+              required
               className="smaller"
               onChange={this.handleInputChange}
               onFocus={this.handleInputFocus}
@@ -92,44 +107,16 @@ class PaymentForm extends React.Component {
   }
 }
 
-async function PayOrder(body, setConfirmed, token, card) {
-  const now = new Date(Date.now());
-  const month = card.expiry[0] + card.expiry[1];
-  const year = card.expiry[2] + card.expiry[3];
-  if (now.getFullYear() > Number(`20${year}`)) {
-    toast('Esse cartão não é valido');
-    return;
-  }
-  if (now.getFullYear() === Number(`20${year}`) && now.getMonth() + 1 > Number(month)) {
-    toast('Esse cartão não é valido');
-    return;
-  }
-  try {
-    await createOrder(body, token);
-    toast('Ingresso reservado com sucesso');
-    setConfirmed(true);
-  } catch (err) {
-    toast('Não foi possível reservar o ingresso');
-    console.log(err);
-  }
-}
-
 export default function CreditCard() {
-  const { summary, setConfirmed } = useContext(TicketSummaryContext);
-  const [card, setCard] = useState({});
   const token = useToken();
+  const navigate = useNavigate();
 
   return (
     <Container>
       <CreditCardComponent>
-        <PaymentForm card={card} setCard={setCard} />
+        <PaymentForm token={token} navigate={navigate} />
       </CreditCardComponent>
-      <button
-        className="bookingButton"
-        onClick={() => {
-          PayOrder(summary, setConfirmed, token, card);
-        }}
-      >
+      <button className="bookingButton" form="card-form" type="submit">
         FINALIZAR PAGAMENTO
       </button>
     </Container>
@@ -152,6 +139,10 @@ const Container = styled.div`
 
     cursor: pointer;
   }
+
+  @media (max-width: 600px) {
+    align-items: center;
+  }
 `;
 
 const CreditCardComponent = styled.div`
@@ -159,12 +150,14 @@ const CreditCardComponent = styled.div`
 
   .component {
     display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
   }
 
   form {
-    margin-left: 30px;
     display: flex;
     flex-direction: column;
+    margin: 0 auto;
   }
 
   input {

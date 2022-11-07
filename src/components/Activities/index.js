@@ -1,5 +1,6 @@
 import React from 'react';
 import getUserOrderByEvent from '../../hooks/api/useUserOrder';
+import getActivitiesInfos from '../../hooks/api/useActivities';
 import DashboardLoading from '../DashboardLoading';
 import DashboardSubtitle from '../DashboardSubtitle';
 import DashboardTitle from '../DashboardTitle';
@@ -7,24 +8,15 @@ import DashboardWarning from '../DashboardWarning';
 import ActivitiesList from './ActivitiesList';
 
 function ActivityPage() {
-  const { userOrder, orderLoading, getUserOrder } = getUserOrderByEvent();
+  const { dates, activitiesLoading, activitiesError, getDates } = getActivitiesInfos();
 
-  if (orderLoading) return <DashboardLoading />;
+  if (activitiesLoading) return <DashboardLoading />;
 
-  if (userOrder) {
-    if (userOrder.Ticket.type === 'Online') {
-      return (
-        <DashboardWarning title="Escolha de hotel e quarto">
-          Sua modalidade de ingresso não inclui hospedagem <br />
-          Prossiga para a escolha de atividades
-        </DashboardWarning>
-      );
-    }
-  } else {
+  if (activitiesError) {
     return (
-      <DashboardWarning title="Escolha de hotel e quarto">
+      <DashboardWarning title="Escolha de atividades">
         Você precisa ter confirmado pagamento antes <br />
-        de fazer a escolha de hospedagem
+        de fazer a escolha de atividades
       </DashboardWarning>
     );
   }
@@ -33,7 +25,7 @@ function ActivityPage() {
     <>
       <DashboardTitle>Escolha de atividades</DashboardTitle>
       <DashboardSubtitle>Primeiro, filtre pelo dia do evento: </DashboardSubtitle>
-      <ActivitiesList />
+      <ActivitiesList dates={dates} getDates={getDates} />
     </>
   );
 }

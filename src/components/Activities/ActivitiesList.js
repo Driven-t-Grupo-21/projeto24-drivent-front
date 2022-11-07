@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import getActivitiesInfos from '../../hooks/api/useActivities';
+import getActivitiesByDate from '../../hooks/api/useActivitiesDate';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import DashboardLoading from '../DashboardLoading';
-import getActivitiesByDate from '../../hooks/api/useActivitiesDate';
 import { useToken } from '../../hooks/useContext';
-import getUserOrderByEvent from '../../hooks/api/useUserOrder';
-import DashboardWarning from '../DashboardWarning';
+import ActivitiesByDate from './ActivitiesByDate';
 
-function ActivitiesList() {
+function ActivitiesList({ dates, activitiesLoading, getDates }) {
   const [selectedDate, setSelectedDate] = useState('');
-  const { dates, activitiesLoading, getDates } = getActivitiesInfos();
+  const { activities, activitiesDateError, activitiesDateLoading, getActivities } = getActivitiesByDate();
   const token = useToken();
-  const { activities, activitiesDateLoading, getActivities } = getActivitiesByDate();
-  const { userOrder, orderError, getUserOrder } = getUserOrderByEvent();
+  const [activitiesInfo, setActivitiesInfo] = useState([]);
+
   if (activitiesLoading) return <DashboardLoading />;
 
   function RenderDate({ date }) {
@@ -29,9 +27,9 @@ function ActivitiesList() {
 
   async function RenderActivities(date) {
     setSelectedDate(date);
-    const activities = await getActivities(token, date.activityDate);
+    const activitiesByDate = await getActivities(token, date.activityDate);
     // # Utilizar a variavel activities para renderizar as atividades em cada local
-    console.log(activities);
+    setActivitiesInfo(activitiesByDate);
   }
   return (
     <>
@@ -40,6 +38,8 @@ function ActivitiesList() {
           <RenderDate key={index} date={date} />
         ))}
       </Container>
+      {activities ? <ActivitiesByDate activities={activities} /> : <></>}
+      <></>
     </>
   );
 }
@@ -49,9 +49,8 @@ export default ActivitiesList;
 const Container = styled.ul`
   display: flex;
   gap: 20px;
-  overflow-x: auto;
   margin-top: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 60px;
 `;
 
 const Button = styled.button`

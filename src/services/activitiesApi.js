@@ -17,3 +17,16 @@ export async function getActivities(token, date) {
   });
   return response.data;
 }
+
+export async function bookActivitiesPost(token, id) {
+  const response = await api.post(
+    `/activities/book/${id}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+}
