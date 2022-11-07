@@ -1,9 +1,9 @@
 import React from 'react';
-// import DashboardLoading from '../DashboardLoading';
+import DashboardLoading from '../DashboardLoading';
 import DashboardSubtitle from '../DashboardSubtitle';
 import DashboardTitle from '../DashboardTitle';
 import CertificateList from './CertificateList';
-// import DashboardWarning from '../DashboardWarning';
+import DashboardWarning from '../DashboardWarning';
 
 function CertificatePage() {
   const { userOrder, orderLoading, getUserOrder } = getUserOrderByEvent();
