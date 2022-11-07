@@ -5,13 +5,10 @@ import { BsFillCheckCircleFill as CheckIcon } from 'react-icons/bs';
 import { GrDocumentPdf as PdfIcon } from 'react-icons/gr';
 import { AiFillCloseCircle as CloseIcon } from 'react-icons/ai';
 
-import logo from '../../assets/images/drivent.png';
-
 import { useEventInfo } from '../../hooks/useContext';
-import dayjs from 'dayjs';
+
 import getUserOrderByEvent from '../../hooks/api/useUserOrder';
 import { Page, Text, Image, View, Document, StyleSheet } from '@react-pdf/renderer';
-import ReactPDF from '@react-pdf/renderer';
 import { PDFViewer } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
@@ -33,7 +30,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   title: {
-    fontSize: 40,
+    fontSize: 50,
     textAlign: 'center',
   },
   text: {
@@ -42,24 +39,20 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
   },
   subtitle: {
-    fontSize: 30,
-    margin: 12,
+    fontSize: 40,
+    fontWeight: 'bold',
+    padding: 60,
     textAlign: 'center',
   },
 });
 
 function CertificateList() {
+  const [pdfPreview, setPdfPreview] = useState(false);
   const eventInfos = useEventInfo();
   const now = Date.now();
   const endDate = Date.parse(eventInfos.endsAt);
   const { userOrder, orderLoading, getUserOrder } = getUserOrderByEvent();
   if (orderLoading) return <DashboardLoading />;
-  console.log({
-    event: eventInfos.title,
-    userName: userOrder.User.Enrollment.name,
-    userCpf: userOrder.User.Enrollment.cpf,
-    ticketType: userOrder.Ticket.type,
-  });
 
   return (
     <Container>
@@ -71,23 +64,27 @@ function CertificateList() {
               <h2>Seu certificado já está disponível!</h2>
               <h3>Baixe seu PDF</h3>
             </MainText>
-            <PdfIcon cursor="pointer" />
+            <PdfIcon cursor="pointer" onClick={() => setPdfPreview(!pdfPreview)} />
           </ConfirmedBox>
-          <PDF>
-            <PDFViewer>
-              <Document>
-                <Page size="A4" style={styles.page} orientation="landscape">
-                  <Text style={styles.title}>Certificado de participação</Text>
-                  <Text style={styles.subtitle}>{eventInfos.title}</Text>
-                  <View style={styles.section} wrap={true}>
-                    <Text style={styles.text}>PARTICIPANTE: {userOrder.User.Enrollment.name}</Text>
-                    <Text style={styles.text}>MODALIDADE: {userOrder.Ticket.type}</Text>
-                    <Text style={styles.text}>CPF: {userOrder.User.Enrollment.cpf}</Text>
-                  </View>
-                </Page>
-              </Document>
-            </PDFViewer>
-          </PDF>
+          {pdfPreview ? (
+            <PDF>
+              <PDFViewer>
+                <Document>
+                  <Page size="A4" style={styles.page} orientation="landscape">
+                    <Text style={styles.title}>Certificado de participação</Text>
+                    <Text style={styles.subtitle}>{eventInfos.title}</Text>
+                    <View style={styles.section} wrap={true}>
+                      <Text style={styles.text}>PARTICIPANTE: {userOrder.User.Enrollment.name}</Text>
+                      <Text style={styles.text}>MODALIDADE: {userOrder.Ticket.type}</Text>
+                      <Text style={styles.text}>CPF: {userOrder.User.Enrollment.cpf}</Text>
+                    </View>
+                  </Page>
+                </Document>
+              </PDFViewer>
+            </PDF>
+          ) : (
+            ''
+          )}
         </>
       ) : (
         <NotConfirmedBox>
