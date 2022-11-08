@@ -4,6 +4,7 @@ import DashboardSubtitle from '../DashboardSubtitle';
 import DashboardTitle from '../DashboardTitle';
 import CertificateList from './CertificateList';
 import DashboardWarning from '../DashboardWarning';
+import getUserOrderByEvent from '../../hooks/api/useUserOrder';
 
 function CertificatePage() {
   const { userOrder, orderLoading, getUserOrder } = getUserOrderByEvent();
