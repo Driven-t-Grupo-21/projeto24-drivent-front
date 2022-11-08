@@ -10,6 +10,7 @@
     "@material-ui/pickers": "^3.3.10",
     "@mui/material": "^5.10.10",
     "@mui/styled-engine-sc": "^5.10.6",
+    "@react-pdf/renderer": "^3.0.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -34,6 +35,10 @@
     "react-useinterval": "^1.0.2",
     "styled-components": "^5.3.6",
     "web-vitals": "^1.1.2"
+  },
+  "overrides": {
+    "@react-pdf/font": "2.2.1",
+    "@react-pdf/pdfkit": "2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

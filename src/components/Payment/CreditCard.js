@@ -19,6 +19,10 @@ class PaymentForm extends React.Component {
     number: '',
   };
 
+  constructor(props) {
+    super(props);
+  }
+
   handleInputFocus = (e) => {
     this.setState({ focus: e.target.name });
   };
@@ -110,7 +114,7 @@ export default function CreditCard() {
   return (
     <Container>
       <CreditCardComponent>
-        <PaymentForm token={token} navigate={navigate}/>
+        <PaymentForm token={token} navigate={navigate} />
       </CreditCardComponent>
       <button className="bookingButton" form="card-form" type="submit">
         FINALIZAR PAGAMENTO
@@ -135,7 +139,7 @@ const Container = styled.div`
 
     cursor: pointer;
   }
-  
+
   @media (max-width: 600px) {
     align-items: center;
   }
